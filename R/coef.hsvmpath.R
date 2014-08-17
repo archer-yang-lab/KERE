@@ -1,5 +1,5 @@
-predict.logitpath <- function(object, newx, s = NULL, 
-    type = c("class", "link"), ...) {
+coef.hsvmpath <- function(object, s = NULL, type = c("coefficients", 
+    "nonzero"), ...) {
     type <- match.arg(type)
     b0 <- t(as.matrix(object$b0))
     rownames(b0) <- "(Intercept)"
@@ -13,6 +13,8 @@ predict.logitpath <- function(object, newx, s = NULL,
 				+nbeta[,lamlist$right,drop=FALSE]%*%Diagonal(x=1-lamlist$frac)
         dimnames(nbeta) <- list(vnames, paste(seq(along = s)))
     }
-    nfit <- as.matrix(as.matrix(cbind2(1, newx)) %*% nbeta)
-    switch(type, link = nfit, class = ifelse(nfit > 0, 1, -1))
+    if (type == "coefficients") 
+        return(nbeta)
+    if (type == "nonzero") 
+        return(nonzero(nbeta[-1, , drop = FALSE], bystep = TRUE))
 } 

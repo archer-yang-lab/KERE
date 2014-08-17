@@ -1,15 +1,16 @@
 ! --------------------------------------------------------------------------
-! lslassoNET.f90: the GCD algorithm for least squares regression.
+! erlassoNET.f90: the GCD algorithm for expectile regression.
 ! --------------------------------------------------------------------------
 ! 
 ! USAGE:
 ! 
-! call lslassoNET (lam2, nobs, nvars, x, y, jd, pf, pf2, dfmax, &
+! call erlassoNET (omega, lam2, nobs, nvars, x, y, jd, pf, pf2, dfmax, &
 ! & pmax, nlam, flmin, ulam, eps, isd, maxit, nalam, b0, beta, ibeta, &
 ! & nbeta, alam, npass, jerr)
 ! 
 ! INPUT ARGUMENTS:
-! 
+!
+!    omega = the parameter in the expectile regression model.
 !    lam2 = regularization parameter for the quadratic penalty of the coefficients
 !    nobs = number of observations
 !    nvars = number of predictor variables
@@ -80,7 +81,7 @@
 
 
 ! --------------------------------------------------
-SUBROUTINE lslassoNET (lam2, nobs, nvars, x, y, jd, pf, pf2, dfmax, pmax, &
+SUBROUTINE erlassoNET (omega, lam2, nobs, nvars, x, y, jd, pf, pf2, dfmax, pmax, &
 & nlam, flmin, ulam, eps, isd, maxit, nalam, b0, beta, ibeta, nbeta, &
 & alam, npass, jerr)
 ! --------------------------------------------------
@@ -102,6 +103,7 @@ SUBROUTINE lslassoNET (lam2, nobs, nvars, x, y, jd, pf, pf2, dfmax, pmax, &
       DOUBLE PRECISION :: lam2
       DOUBLE PRECISION :: flmin
       DOUBLE PRECISION :: eps
+      DOUBLE PRECISION :: omega
       DOUBLE PRECISION :: x (nobs, nvars)
       DOUBLE PRECISION :: y (nobs)
       DOUBLE PRECISION :: pf (nvars)
@@ -146,8 +148,18 @@ SUBROUTINE lslassoNET (lam2, nobs, nvars, x, y, jd, pf, pf2, dfmax, pmax, &
       END IF
       pf = Max (0.0D0, pf)
       pf2 = Max (0.0D0, pf2)
-      CALL standard (nobs, nvars, x, ju, isd, xmean, xnorm, maj)
-      CALL lslassoNETpath (lam2, maj, nobs, nvars, x, y, ju, pf, pf2, dfmax, &
+! special standardize treatment to expectile  
+      DO j=1,nvars                                  
+          IF(ju(j)==1) THEN                         
+              maj(j)=dot_product(x(:,j),x(:,j))/nobs
+              IF(isd==1) THEN
+                  xnorm(j)=sqrt(maj(j))    !standard deviation               
+                  x(:,j)=x(:,j)/xnorm(j)
+                  maj(j)=1.0D0
+              ENDIF
+          ENDIF
+      ENDDO
+      CALL erlassoNETpath (omega, lam2, maj, nobs, nvars, x, y, ju, pf, pf2, dfmax, &
      & pmax, nlam, flmin, ulam, eps, maxit, nalam, b0, beta, ibeta, &
      & nbeta, alam, npass, jerr)
       IF (jerr > 0) RETURN! check error after calling function
@@ -159,14 +171,12 @@ SUBROUTINE lslassoNET (lam2, nobs, nvars, x, y, jd, pf, pf2, dfmax, pmax, &
                beta (j, l) = beta (j, l) / xnorm (ibeta(j))
             END DO
          END IF
-         b0 (l) = b0 (l) - dot_product (beta(1:nk, l), &
-        & xmean(ibeta(1:nk)))
       END DO
       DEALLOCATE (ju, xmean, xnorm, maj)
       RETURN
-END SUBROUTINE lslassoNET
+END SUBROUTINE erlassoNET
 ! --------------------------------------------------
-SUBROUTINE lslassoNETpath (lam2, maj, nobs, nvars, x, y, ju, pf, pf2, dfmax, &
+SUBROUTINE erlassoNETpath (omega, lam2, maj, nobs, nvars, x, y, ju, pf, pf2, dfmax, &
 & pmax, nlam, flmin, ulam, eps, maxit, nalam, b0, beta, m, nbeta, alam, &
 & npass, jerr)
 ! --------------------------------------------------
@@ -190,6 +200,7 @@ SUBROUTINE lslassoNETpath (lam2, maj, nobs, nvars, x, y, ju, pf, pf2, dfmax, &
       INTEGER :: nbeta (nlam)
       DOUBLE PRECISION :: lam2
       DOUBLE PRECISION :: eps
+      DOUBLE PRECISION :: omega
       DOUBLE PRECISION :: x (nobs, nvars)
       DOUBLE PRECISION :: y (nobs)
       DOUBLE PRECISION :: pf (nvars)
@@ -200,6 +211,7 @@ SUBROUTINE lslassoNETpath (lam2, maj, nobs, nvars, x, y, ju, pf, pf2, dfmax, &
       DOUBLE PRECISION :: alam (nlam)
       DOUBLE PRECISION :: maj (nvars)
     ! - - - local declarations - - -
+      DOUBLE PRECISION :: bigm
       DOUBLE PRECISION :: d
       DOUBLE PRECISION :: dif
       DOUBLE PRECISION :: oldb
@@ -208,9 +220,11 @@ SUBROUTINE lslassoNETpath (lam2, maj, nobs, nvars, x, y, ju, pf, pf2, dfmax, &
       DOUBLE PRECISION :: al
       DOUBLE PRECISION :: alf
       DOUBLE PRECISION :: flmin
+      DOUBLE PRECISION :: dl (nobs)
       DOUBLE PRECISION, DIMENSION (:), ALLOCATABLE :: b
       DOUBLE PRECISION, DIMENSION (:), ALLOCATABLE :: oldbeta
       DOUBLE PRECISION, DIMENSION (:), ALLOCATABLE :: r
+      INTEGER :: i
       INTEGER :: k
       INTEGER :: j
       INTEGER :: l
@@ -238,7 +252,8 @@ SUBROUTINE lslassoNETpath (lam2, maj, nobs, nvars, x, y, ju, pf, pf2, dfmax, &
       npass = 0
       ni = npass
       mnl = Min (mnlam, nlam)
-      maj = 2.0D0 * maj
+      bigm = 4.0D0 * Max((1 - omega), omega)
+      maj = bigm * maj
       IF (flmin < 1.0D0) THEN
          flmin = Max (mfl, flmin)
          alf = flmin ** (1.0D0/(DBLE(nlam)-1.0D0))
@@ -255,10 +270,17 @@ SUBROUTINE lslassoNETpath (lam2, maj, nobs, nvars, x, y, ju, pf, pf2, dfmax, &
                al = big
             ELSE IF (l == 2) THEN
                al = 0.0D0
+               DO i = 1, nobs
+                   IF (r(i) <= 0.0D0) THEN
+                       dl (i) = 2.0D0 * (1 - omega) * r(i)
+                   ELSE
+                       dl (i) = 2.0D0 * omega * r(i)
+                   END IF
+               END DO
                DO j = 1, nvars
                   IF (ju(j) /= 0) THEN
                      IF (pf(j) > 0.0D0) THEN
-                        u = dot_product (r, x(:, j))
+                        u = dot_product (dl, x(:, j))
                         al = Max (al, Abs(u)/pf(j))
                      END IF
                   END IF
@@ -277,7 +299,15 @@ SUBROUTINE lslassoNETpath (lam2, maj, nobs, nvars, x, y, ju, pf, pf2, dfmax, &
                DO k = 1, nvars
                   IF (ju(k) /= 0) THEN
                      oldb = b (k)
-                     u = dot_product (r, x(:, k))
+					 u = 0.0D0
+                     DO i = 1, nobs
+                     IF (r(i) <= 0.0D0) THEN
+                         dl (i) = 2.0D0 * (1 - omega) * r(i)
+                     ELSE
+                         dl (i) = 2.0D0 * omega * r(i)
+                     END IF
+                         u = u + dl (i) * x (i, k)
+                     END DO
                      u = maj (k) * b (k) + u / nobs
                      v = al * pf (k)
                      v = Abs (u) - v
@@ -288,7 +318,7 @@ SUBROUTINE lslassoNETpath (lam2, maj, nobs, nvars, x, y, ju, pf, pf2, dfmax, &
                      END IF
                      d = b (k) - oldb
                      IF (Abs(d) > 0.0D0) THEN
-                        dif = Max (dif, d**2)
+                        dif = Max (dif, bigm*d**2)
                         r = r - x (:, k) * d
                         IF (mm(k) == 0) THEN
                            ni = ni + 1
@@ -299,18 +329,26 @@ SUBROUTINE lslassoNETpath (lam2, maj, nobs, nvars, x, y, ju, pf, pf2, dfmax, &
                      END IF
                   END IF
                END DO
-               d = sum (r) / nobs
-               IF (d /= 0.0D0) THEN
-                  b (0) = b (0) + d
-                  r = r - d
-                  dif = Max (dif, d**2)
-               END IF
                IF (ni > pmax) EXIT
                IF (dif < eps) EXIT
                IF(npass > maxit) THEN
-                   jerr=-l
-                   RETURN
+                    jerr=-l
+                    RETURN
                ENDIF
+!                DO i = 1, nobs
+!                    IF (r(i) <= 0.0D0) THEN
+!                        dl (i) = 2.0D0 * (1 - omega) * r(i)
+!                    ELSE
+!                        dl (i) = 2.0D0 * omega * r(i)
+!                    END IF
+!                END DO
+!                d = sum (dl) / (nobs * bigm)
+!                IF (d /= 0.0D0) THEN
+!                   b (0) = b (0) + d
+!                   r = r - d
+!                   dif = Max (dif, bigm*d**2)
+!                END IF
+
         ! --inner loop----------------------
                DO
                   npass = npass + 1
@@ -318,7 +356,15 @@ SUBROUTINE lslassoNETpath (lam2, maj, nobs, nvars, x, y, ju, pf, pf2, dfmax, &
                   DO j = 1, ni
                      k = m (j)
                      oldb = b (k)
-                     u = dot_product (r, x(:, k))
+					 u = 0.0D0
+                     DO i = 1, nobs
+                     IF (r(i) <= 0.0D0) THEN
+                         dl (i) = 2.0D0 * (1 - omega) * r(i)
+                     ELSE
+                         dl (i) = 2.0D0 * omega * r(i)
+                     END IF
+                         u = u + dl (i) * x (i, k)
+                     END DO
                      u = maj (k) * b (k) + u / nobs
                      v = al * pf (k)
                      v = Abs (u) - v
@@ -329,20 +375,27 @@ SUBROUTINE lslassoNETpath (lam2, maj, nobs, nvars, x, y, ju, pf, pf2, dfmax, &
                      END IF
                      d = b (k) - oldb
                      IF (Abs(d) > 0.0D0) THEN
-                        dif = Max (dif, d**2)
+                        dif = Max (dif, bigm*d**2)
                         r = r - x (:, k) * d
                      END IF
-                  END DO
-                  d = sum (r) / nobs
-                  IF (d /= 0.0D0) THEN
-                     b (0) = b (0) + d
-                     r = r - d
-                     dif = Max (dif, d**2)
-                  END IF
+                  END DO      
+!                   DO i = 1, nobs
+!                       IF (r(i) <= 0.0D0) THEN
+!                           dl (i) = 2.0D0 * (1 - omega) * r(i)
+!                       ELSE
+!                           dl (i) = 2.0D0 * omega * r(i)
+!                       END IF
+!                   END DO
+!                   d = sum (dl) / (nobs * bigm)
+!                   IF (d /= 0.0D0) THEN
+!                      b (0) = b (0) + d
+!                      r = r - d
+!                      dif = Max (dif, bigm*d**2)
+!                   END IF
                   IF (dif < eps) EXIT
                   IF(npass > maxit) THEN
-                      jerr=-l
-                      RETURN
+                       jerr=-l
+                       RETURN
                   ENDIF
                END DO
             END DO
@@ -375,4 +428,4 @@ SUBROUTINE lslassoNETpath (lam2, maj, nobs, nvars, x, y, ju, pf, pf2, dfmax, &
       END DO
       DEALLOCATE (b, oldbeta, r, mm)
       RETURN
-END SUBROUTINE lslassoNETpath
+END SUBROUTINE erlassoNETpath

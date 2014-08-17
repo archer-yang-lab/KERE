@@ -1,7 +1,6 @@
-kerneltool <- function(x, y, nlambda = 100, method = c("hhsvm", 
-    "logit", "sqsvm", "ls", "er"), lambda.factor = ifelse(nobs < nvars, 0.01, 
-    1e-04), lambda = NULL, lambda2 = 0, pf = rep(1, nvars), pf2 = rep(1, nvars), exclude, 
-    dfmax = nvars + 1, pmax = min(dfmax * 1.2, nvars), standardize = TRUE, 
+kerneltool <- function(x, y, nlambda = 100, method = c( 
+    "logit", "ls"), lambda.factor = 0.01, 
+    lambda = NULL, exclude, standardize = TRUE, 
     eps = 1e-08, maxit = 1e+06, delta = 2, omega = 0.5) {
     #################################################################################
     #data setup
@@ -19,20 +18,9 @@ kerneltool <- function(x, y, nlambda = 100, method = c("hhsvm",
         stop("x and y have different number of observations")
     #################################################################################
     #parameter setup
-    if (length(pf) != nvars) 
-        stop("The size of L1 penalty factor must be same as the number of input variables")
-	if (length(pf2) != nvars) 
-	    stop("The size of L2 penalty factor must be same as the number of input variables")
-    if (lambda2 < 0) 
-        stop("lambda2 must be non-negative")
     maxit <- as.integer(maxit)
-    lam2 <- as.double(lambda2)
-    pf <- as.double(pf)
-    pf2 <- as.double(pf2)
     isd <- as.integer(standardize)
     eps <- as.double(eps)
-    dfmax <- as.integer(dfmax)
-    pmax <- as.integer(pmax)
     if (!missing(exclude)) {
         jd <- match(exclude, seq(nvars), 0)
         if (!all(jd > 0)) 
@@ -60,18 +48,9 @@ kerneltool <- function(x, y, nlambda = 100, method = c("hhsvm",
 	hhsvm = hsvmpath(x, y, nlam, flmin, 
         ulam, isd, eps, dfmax, pmax, jd, pf, pf2, maxit, lam2, delta, 
         nobs, nvars, vnames), 
-	logit = logitpath(x, y, nlam, flmin, 
-        ulam, isd, eps, dfmax, pmax, jd, pf, pf2, maxit, lam2, nobs, 
-        nvars, vnames), 
-	sqsvm = sqsvmpath(x, y, nlam, flmin, 
-        ulam, isd, eps, dfmax, pmax, jd, pf, pf2, maxit, lam2, nobs, 
-        nvars, vnames),
 	er = erpath(x, y, nlam, flmin, 
         ulam, isd, eps, dfmax, pmax, jd, pf, pf2, maxit, lam2, omega, 
-        nobs, nvars, vnames),
-	ls = lspath(x, y, nlam, flmin, 
-	    ulam, isd, eps, dfmax, pmax, jd, pf, pf2, maxit, lam2, nobs, 
-	    nvars, vnames))
+        nobs, nvars, vnames))
     if (is.null(lambda)) 
         fit$lambda <- lamfix(fit$lambda)
     fit$call <- this.call

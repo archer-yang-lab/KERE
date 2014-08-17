@@ -1,5 +1,5 @@
-predict.lspath <- function(object, newx, s = NULL, 
-    type = c("link"), ...) {
+predict.hsvmpath <- function(object, newx, s = NULL, 
+    type = c("class", "link"), ...) {
     type <- match.arg(type)
     b0 <- t(as.matrix(object$b0))
     rownames(b0) <- "(Intercept)"
@@ -14,5 +14,5 @@ predict.lspath <- function(object, newx, s = NULL,
         dimnames(nbeta) <- list(vnames, paste(seq(along = s)))
     }
     nfit <- as.matrix(as.matrix(cbind2(1, newx)) %*% nbeta)
-    nfit
+    switch(type, link = nfit, class = ifelse(nfit > 0, 1, -1))
 } 

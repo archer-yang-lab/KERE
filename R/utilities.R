@@ -25,7 +25,7 @@ err <- function(n, maxit, pmax) {
         if (n == 10000) 
             msg <- "All penalty factors are <= 0"
         n <- 1
-        msg <- paste("in kerneltool fortran code -", msg)
+        msg <- paste("in gcdnet fortran code -", msg)
     }
     if (n < 0) {
         if (n > -10000) 
@@ -37,7 +37,7 @@ err <- function(n, maxit, pmax) {
                 pmax, " at ", -n - 10000, "th lambda value; solutions for larger lambdas returned", 
                 sep = "")
         n <- -1
-        msg <- paste("from kerneltool fortran code -", msg)
+        msg <- paste("from gcdnet fortran code -", msg)
     }
     list(n = n, msg = msg)
 }
