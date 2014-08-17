@@ -1,5 +1,5 @@
 hsvmpath <- function(x, y, nlam, flmin, ulam, isd, 
-    eps, dfmax, pmax, jd, pf, pf2, maxit, lam2, delta, nobs, nvars, 
+    eps, jd, maxit, delta, nobs, nvars, 
     vnames) {
     #################################################################################
     #data setup
@@ -12,16 +12,15 @@ hsvmpath <- function(x, y, nlam, flmin, ulam, isd,
     delta <- as.double(delta)
     #################################################################################
     # call Fortran core
-    fit <- .Fortran("hsvmlassoNET", delta, lam2, nobs, nvars, 
-        as.double(x), as.double(y), jd, pf, pf2, dfmax, pmax, nlam, 
+    fit <- .Fortran("hsvmlassoNET", delta, nobs, nvars, 
+        as.double(x), as.double(y), jd, nlam, 
         flmin, ulam, eps, isd, maxit, nalam = integer(1), b0 = double(nlam), 
-        beta = double(pmax * nlam), ibeta = integer(pmax), nbeta = integer(nlam), 
+        beta = double(nobs * nlam), 
         alam = double(nlam), npass = integer(1), jerr = integer(1), 
-        PACKAGE = "gcdnet")
+        PACKAGE = "kerneltool")
     #################################################################################
     # output
-    outlist <- getoutput(fit, maxit, pmax, nvars, vnames)
-    outlist <- c(outlist, list(npasses = fit$npass, jerr = fit$jerr))
+    outlist <- fit
     class(outlist) <- c("hsvmpath")
     outlist
 } 
