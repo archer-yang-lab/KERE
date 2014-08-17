@@ -1,17 +1,18 @@
 source("kernels.R", chdir = TRUE)#
-nobs <- 10#
+source("source.R") # R code for generating the FHT data#
 #
-X = matrix(rnorm(nobs*nobs,0,1),nobs,nobs)#
+nobs = 100#
+p = 200#
+rho = 0.9#
+#
+X=genx2(nobs,p,rho)#
+y=genjerry(X,3)#
 ## initialize kernel function#
-rbf <- rbfdot(sigma = 0.05)#
-rbf#
+rbf <- polydot(degree = 1, scale = 1, offset = 1)#
+#
 ## calculate kernel matrix#
-kernelMatrix(rbf, X)#
-Kmat <- kernelMatrix(rbf,X)#
-y <- rnorm(nobs)
-ulam <- 0.4
-nlam <- length(ulam)
-setwd('/Users/emeryyi/Dropbox/boxiang/tmp')
+Kmat <- kernelMatrix(rbf,X)
+ulam  <-  c(0.4,0.5,0.6,0.7)#
 ulam <- 0.4#
 omega  <-  0.3#
 omega <- as.double(omega)#
@@ -19,7 +20,44 @@ mbd <- 2 * max(1-omega, omega)#
 nlam <- length(ulam)#
 eps <- 10e-12#
 maxit  <-  25
-setwd('/Users/emeryyi/Dropbox/Research/googleproject/kerneltool/R')
+ulam  <-  c(0.4,0.5,0.6,0.7)#
+omega  <-  0.3#
+omega <- as.double(omega)#
+mbd <- 2 * max(1-omega, omega)#
+nlam <- length(ulam)#
+eps <- 10e-12#
+maxit  <-  25
+ulam  <-  c(0.4,0.5,0.6,0.7)#
+omega  <-  0.3#
+omega <- as.double(omega)#
+mbd <- 2 * max(1-omega, omega)#
+nlam <- length(ulam)#
+eps <- 10e-12#
+maxit  <-  1e6
+npass
+alpmat
+dim(alpmat)
+dl <- function(r, omega)#
+{#
+	d = 2.0*ifelse(r>0, omega, 1-omega)*r	#
+}
+l=1
+B <- alpmat
+ri <- y-(cbind(1,Kmat)%*%B[,l])
+ri
+L = dl(ri)
+L = dl(ri,omega)
+L
+yxl <- rbind(1,Kmat) %*% L
+yxl <- - rbind(1,Kmat) %*% L / nobs + 2 * ulam[l] * cbind(0,rbind(0,Kmat)) %*% alpmat[, l]
+yxl
+ulam  <-  c(0.4,0.5,0.6,0.7)#
+omega  <-  0.3#
+omega <- as.double(omega)#
+mbd <- 2 * max(1-omega, omega)#
+nlam <- length(ulam)#
+eps <- 10e-14#
+maxit  <-  1e6
 y <- as.double(y)#
     if (omega <= 0 || omega >= 1) #
         stop("omega must be in (0,1)")#
@@ -69,7 +107,18 @@ y <- as.double(y)#
 		    npass[l] = npass[l] + 1#
 		    if(sum(npass) > maxit) break#
 		}#
-		if(sum(npass) > maxit) break#
 		alpmat[, l] <- alpvec#
+		if(sum(npass) > maxit) {#
+			break#
+			jerr = -l#
+		}#
 	}
-alpmat
+setwd('/Users/emeryyi/Dropbox/Research/googleproject/kerneltool/R')
+B <- alpmat#
+for (l in 1:nlam)#
+{#
+	ri <- y-(cbind(1,Kmat)%*%B[,l])#
+	L = dl(ri,omega)#
+	yxl <- - rbind(1,Kmat) %*% L / nobs + 2 * ulam[l] * cbind(0,rbind(0,Kmat)) %*% alpmat[, l]#
+	if (crossprod(yxl)>1e-6) print(paste("this is",crossprod(yxl)," at ",l))#
+}

@@ -58,7 +58,6 @@ erpath <- function(x, y, Kmat, nlam, ulam, isd,
 			jerr = -l
 		}
 	}
-	
     #################################################################################
     # call Fortran core
     # fit <- .Fortran("erlassoNET", omega, nobs, nvars, as.double(x), 
