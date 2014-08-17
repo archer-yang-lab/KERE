@@ -1,5 +1,5 @@
 kerneltool <- function(x, y, nlambda = 100, method = c( 
-    "logit", "ls"), lambda.factor = 0.01, 
+    "hhsvm", "er"), lambda.factor = 0.01, 
     lambda = NULL, exclude, standardize = TRUE, 
     eps = 1e-08, maxit = 1e+06, delta = 2, omega = 0.5) {
     #################################################################################
@@ -46,10 +46,10 @@ kerneltool <- function(x, y, nlambda = 100, method = c(
     #################################################################################
     fit <- switch(method, 
 	hhsvm = hsvmpath(x, y, nlam, flmin, 
-        ulam, isd, eps, dfmax, pmax, jd, pf, pf2, maxit, lam2, delta, 
+        ulam, isd, eps, jd, maxit, delta, 
         nobs, nvars, vnames), 
 	er = erpath(x, y, nlam, flmin, 
-        ulam, isd, eps, dfmax, pmax, jd, pf, pf2, maxit, lam2, omega, 
+        ulam, isd, eps, jd, maxit, omega, 
         nobs, nvars, vnames))
     if (is.null(lambda)) 
         fit$lambda <- lamfix(fit$lambda)
