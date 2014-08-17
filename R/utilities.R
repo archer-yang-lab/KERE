@@ -18,12 +18,8 @@ err <- function(n, maxit, pmax) {
     if (n == 0) 
         msg <- ""
     if (n > 0) {
-        if (n < 7777) 
-            msg <- "Memory allocation error"
         if (n == 7777) 
             msg <- "All used predictors have zero variance"
-        if (n == 10000) 
-            msg <- "All penalty factors are <= 0"
         n <- 1
         msg <- paste("in kerneltool fortran code -", msg)
     }
@@ -31,10 +27,6 @@ err <- function(n, maxit, pmax) {
         if (n > -10000) 
             msg <- paste("Convergence for ", -n, "th lambda value not reached after maxit=", 
                 maxit, " iterations; solutions for larger lambdas returned", 
-                sep = "")
-        if (n < -10000) 
-            msg <- paste("Number of nonzero coefficients along the path exceeds pmax=", 
-                pmax, " at ", -n - 10000, "th lambda value; solutions for larger lambdas returned", 
                 sep = "")
         n <- -1
         msg <- paste("from kerneltool fortran code -", msg)
@@ -99,13 +91,6 @@ lambda.interp <- function(lambda, s) {
         sfrac[left == right] <- 1
     }
     list(left = left, right = right, frac = sfrac)
-}
-
-
-lamfix <- function(lam) {
-    llam <- log(lam)
-    lam[1] <- exp(2 * llam[2] - llam[3])
-    lam
 }
 
 

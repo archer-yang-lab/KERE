@@ -1,13 +1,14 @@
-kerneltool <- function(x, y, nlambda = 100, method = c( 
-    "hhsvm", "er"), lambda.factor = 0.01, 
-    lambda = NULL, exclude, standardize = TRUE, 
-    eps = 1e-08, maxit = 1e+06, delta = 2, omega = 0.5) {
+kerneltool <- function(x, y, Kmat, method = c( 
+    "hhsvm", "er"), lambda = NULL, standardize = TRUE, 
+    eps = 1e-08, maxit = 1e+06, delta = 2, omega = 0.5, gamma = 1e-06) {
     #################################################################################
     #data setup
     method <- match.arg(method)
     this.call <- match.call()
     y <- drop(y)
     x <- as.matrix(x)
+	Kmat <- as.matrix(Kmat)
+	diag(Kmat) <- diag(Kmat) + gamma 
     np <- dim(x)
     nobs <- as.integer(np[1])
     nvars <- as.integer(np[2])
@@ -21,38 +22,20 @@ kerneltool <- function(x, y, nlambda = 100, method = c(
     maxit <- as.integer(maxit)
     isd <- as.integer(standardize)
     eps <- as.double(eps)
-    if (!missing(exclude)) {
-        jd <- match(exclude, seq(nvars), 0)
-        if (!all(jd > 0)) 
-            stop("Some excluded variables out of range")
-        jd <- as.integer(c(length(jd), jd))
-    } else jd <- as.integer(0)
     #################################################################################
     #lambda setup
-    nlam <- as.integer(nlambda)
     if (is.null(lambda)) {
-        if (lambda.factor >= 1) 
-            stop("lambda.factor should be less than 1")
-        flmin <- as.double(lambda.factor)
-        ulam <- double(1)
+        stop("user must provide a lambda sequence")
     } else {
-        #flmin=1 if user define lambda
-        flmin <- as.double(1)
-        if (any(lambda < 0)) 
-            stop("lambdas should be non-negative")
         ulam <- as.double(rev(sort(lambda)))
         nlam <- as.integer(length(lambda))
     }
     #################################################################################
     fit <- switch(method, 
-	hhsvm = hsvmpath(x, y, nlam, flmin, 
-        ulam, isd, eps, jd, maxit, delta, 
+	hhsvm = hsvmpath(x, y, Kmat, nlam, ulam, isd, eps, maxit, delta, 
         nobs, nvars, vnames), 
-	er = erpath(x, y, nlam, flmin, 
-        ulam, isd, eps, jd, maxit, omega, 
+	er = erpath(x, y, Kmat, nlam, ulam, isd, eps, maxit, omega, 
         nobs, nvars, vnames))
-    if (is.null(lambda)) 
-        fit$lambda <- lamfix(fit$lambda)
     fit$call <- this.call
     #################################################################################
     class(fit) <- c("kerneltool", class(fit))
