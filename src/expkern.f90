@@ -91,8 +91,8 @@ SUBROUTINE expkern (omega, Kmat, Umat, Dvec, Ksum, Bmat, &
 		ENDDO
 		alpmat(:, l) = alpvec
 		IF (sum(npass) > maxit) THEN
-			EXIT
 			jerr = -l
+			EXIT
 		ENDIF
 		anlam = l
 	ENDDO

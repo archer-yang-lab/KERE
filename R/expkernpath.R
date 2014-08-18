@@ -22,9 +22,11 @@ expkernpath <- function(x, y, Kmat, nlam, ulam,
 			PACKAGE = "kerneltool")
     ################################################################################
     # output
+    errmsg <- err(fit$jerr, maxit)
+    if(paste(errmsg$n)=='-1') print(errmsg$msg, call. = FALSE)
 	anlam <- fit$anlam
     alpha <- matrix(fit$alpmat[seq((nobs+1) * anlam)], nobs+1, anlam) 
-    outlist <- list(alpha = alpha, lambda = ulam[seq(anlam)], npass = fit$npass, jerr = fit$jerr)
+    outlist <- list(alpha = alpha, lambda = ulam[seq(anlam)], npass = fit$npass[seq(anlam)], jerr = fit$jerr)
     class(outlist) <- c("expkernpath")
     outlist
 } 
