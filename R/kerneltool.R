@@ -1,4 +1,4 @@
-kerneltool <- function(x, y, Kmat, method = c("hhsvm", "er", "exp"), 					     
+kerneltool <- function(x, y, Kmat, method = c("hhsvm", "er", "exp","holder"), 					     
 	lambda = NULL, eps = 1e-08, maxit = 1e+06, delta = 2, 
 	omega = 0.5, gamma = 1e-06) {
     #################################################################################
@@ -27,10 +27,12 @@ kerneltool <- function(x, y, Kmat, method = c("hhsvm", "er", "exp"),
     }
     #################################################################################
     fit <- switch(method, 
-	hhsvm = hsvmpath(x, y, Kmat, nlam, ulam, eps, maxit, delta, 
+	holder = holderkernpath(x, y, Kmat, nlam, ulam, eps, maxit, delta, 
         nobs), 
 	exp = expkernpath(x, y, Kmat, nlam, ulam, eps, maxit, omega, 
         nobs),
+	hhsvm = hsvmpath(x, y, Kmat, nlam, ulam, eps, maxit, delta, 
+	        nobs),
 	er = erpath(x, y, Kmat, nlam, ulam, eps, maxit, omega, 
         nobs))
     fit$call <- this.call

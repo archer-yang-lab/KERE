@@ -1,0 +1,69 @@
+hsvmpath <- function(x, y, Kmat, nlam, ulam, 
+    eps, maxit, delta, nobs) {
+    #################################################################################
+    #data setup
+    y <- as.factor(y)
+    y <- c(-1, 1)[as.numeric(y)]
+    if (!all(y %in% c(-1, 1))) 
+        stop("y should be a factor with two levels")
+    if (delta < 0) 
+        stop("delta must be non-negative")
+	delta <- as.double(delta)
+    eigen_result <- eigen(Kmat, symmetric = TRUE)
+	Umat <- eigen_result$vectors
+	Dvec <- eigen_result$values
+	Ksum <- colSums(Kmat)
+	Bmat <- - Ksum %o% Ksum / nobs
+	#################################################################################
+	K0 = rbind(0, cbind(0, Kmat))
+    Ki = rbind(1, Kmat)
+	mbd = (delta+1.0)*(delta+1.0)/delta
+	decib = delta / (delta + 1.0)
+	fdr = - decib ** (delta + 1.0)
+	npass <- rep(0,nlam)
+    r <- rep(0,nobs) # r = 0 in classification case
+	alpmat <- matrix(0, nobs+1, nlam)
+	alpvec = rep(0, nobs+1)
+	for(l in 1:nlam) {
+		dif <- rep(NA, nobs+1)
+		# computing Ku inverse
+		Ainv <- Umat %*% diag(1/(Dvec^2 + 2*nobs*ulam[l]*Dvec/mbd)) %*% t(Umat)
+		BAmat <- Bmat %*% Ainv
+		Ginv <- 1 / (1 + sum(diag(BAmat)))
+		Qinv <- Ainv - Ginv * Ainv %*% BAmat
+		QKsum <- Qinv %*% Ksum / nobs
+		Mtmp <- (1 + crossprod(QKsum,Ksum)) / nobs
+		KUinv <- matrix(NA, nobs+1, nobs+1)
+		KUinv[1, 1] <- Mtmp
+		KUinv[1, 2:(nobs+1)]  <- -QKsum
+		KUinv[2:(nobs+1), 1]  <- -QKsum
+		KUinv[2:(nobs+1), 2:(nobs+1)]  <- Qinv
+		# for debug
+		# KUtmp = rbind(c(nobs, Ksum), cbind(Ksum, Kmat%*%Kmat + 2*nobs*ulam[l]*Kmat / mbd))
+		# KUinv1  <- solve(KUtmp)
+		# update alpha
+		oldalpvec = alpvec
+		while(1){
+		    phi <- ifelse(r>decib, r**(-delta-1)*fdr, -1.0)
+		    oldalpvec <- alpvec
+		    alpvec <-  oldalpvec + (2*nobs/mbd) * KUinv %*% (-ulam[l]*K0%*%oldalpvec - 0.5*c(1,y)*Ki%*%phi/nobs) 
+		    alpvec <-  drop(alpvec)
+		    dif <- alpvec - oldalpvec
+		    r <- r + y * dif %*% Ki
+		    r <- drop(r)
+		    if(sum(dif^2)/sum(oldalpvec^2) < eps) break
+		    npass[l] = npass[l] + 1
+		    if(sum(npass) > maxit) break
+		}
+		alpmat[, l] <- alpvec
+		if(sum(npass) > maxit) {
+			break
+			jerr = -l
+		}
+	}
+    ################################################################################
+    # output
+    outlist <- list(alpha = alpmat)
+    class(outlist) <- c("hsvmpath")
+    outlist
+} 
