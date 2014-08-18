@@ -1,13 +1,11 @@
-erpath <- function(x, y, Kmat, nlam, ulam, isd, 
-    eps, maxit, omega, nobs, nvars, vnames) {
+erpath <- function(x, y, Kmat, nlam, ulam, 
+    eps, maxit, omega, nobs) {
     #################################################################################
     #data setup
     y <- as.double(y)
     if (omega <= 0 || omega >= 1) 
         stop("omega must be in (0,1)")
 	omega <- as.double(omega)
-	mbd <- 2 * max(1-omega, omega)
-	#################################################################################
     eigen_result <- eigen(Kmat, symmetric = TRUE)
 	Umat <- eigen_result$vectors
 	Dvec <- eigen_result$values
@@ -16,6 +14,7 @@ erpath <- function(x, y, Kmat, nlam, ulam, isd,
 	#################################################################################
 	K0 = rbind(0, cbind(0, Kmat))
     Ki = rbind(1, Kmat)
+	mbd <- 2 * max(1-omega, omega)
 	npass <- rep(0,nlam)
     r <- y # r = 0 in classification case
 	alpmat <- matrix(0, nobs+1, nlam)
@@ -37,7 +36,6 @@ erpath <- function(x, y, Kmat, nlam, ulam, isd,
 		# for debug
 		# KUtmp = rbind(c(nobs, Ksum), cbind(Ksum, Kmat%*%Kmat + 2*nobs*ulam[l]*Kmat / mbd))
 		# KUinv1  <- solve(KUtmp)
-		
 		# update alpha
 		oldalpvec = alpvec
 		while(1){
@@ -58,17 +56,9 @@ erpath <- function(x, y, Kmat, nlam, ulam, isd,
 			jerr = -l
 		}
 	}
-    #################################################################################
-    # call Fortran core
-    # fit <- .Fortran("erlassoNET", omega, nobs, nvars, as.double(x), 
-    #     as.double(y), jd, nlam, flmin, ulam, 
-    #     eps, isd, maxit, nalam = integer(1), b0 = double(nlam), 
-    #     alp = double(nobs * nlam), 
-    #     alam = double(nlam), npass = integer(1), jerr = integer(1), 
-    #     PACKAGE = "kerneltool")
-    #################################################################################
+    ################################################################################
     # output
-    outlist <- fit
+    outlist <- list(alpha = alpmat)
     class(outlist) <- c("erpath")
     outlist
 } 

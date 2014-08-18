@@ -1,6 +1,5 @@
-hsvmpath <- function(x, y, nlam, flmin, ulam, isd, 
-    eps, jd, maxit, delta, nobs, nvars, 
-    vnames) {
+hsvmpath <- function(x, y, nlam, flmin, ulam, 
+    eps, jd, maxit, delta, nobs) {
     #################################################################################
     #data setup
     y <- as.factor(y)
@@ -14,7 +13,7 @@ hsvmpath <- function(x, y, nlam, flmin, ulam, isd,
     # call Fortran core
     fit <- .Fortran("hsvmlassoNET", delta, nobs, nvars, 
         as.double(x), as.double(y), jd, nlam, 
-        flmin, ulam, eps, isd, maxit, nalam = integer(1), b0 = double(nlam), 
+        flmin, ulam, eps, maxit, nalam = integer(1), b0 = double(nlam), 
         beta = double(nobs * nlam), 
         alam = double(nlam), npass = integer(1), jerr = integer(1), 
         PACKAGE = "kerneltool")
