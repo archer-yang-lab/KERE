@@ -1,5 +1,5 @@
-kerneltool <- function(x, y, Kmat, method = c("hhsvm", "er", "exp","holder"), 					     
-	lambda = NULL, eps = 1e-08, maxit = 1e+06, delta = 2, 
+kerneltool <- function(x, y, Kmat, method = c("er", "holder", "exp", "holderexp"), 					     
+	lambda = NULL, eps = 1e-08, maxit = 1e+06, qval = 2, 
 	omega = 0.5, gamma = 1e-06) {
     #################################################################################
     #data setup
@@ -7,8 +7,8 @@ kerneltool <- function(x, y, Kmat, method = c("hhsvm", "er", "exp","holder"),
     this.call <- match.call()
     y <- drop(y)
     x <- as.matrix(x)
-	Kmat <- as.matrix(Kmat)
-	diag(Kmat) <- diag(Kmat) + gamma 
+	  Kmat <- as.matrix(Kmat)
+    diag(Kmat) <- diag(Kmat) + gamma 
     np <- dim(x)
     nobs <- as.integer(np[1])
     if (length(y) != nobs) 
@@ -27,14 +27,14 @@ kerneltool <- function(x, y, Kmat, method = c("hhsvm", "er", "exp","holder"),
     }
     #################################################################################
     fit <- switch(method, 
-	holder = holderkernpath(x, y, Kmat, nlam, ulam, eps, maxit, delta, 
-        nobs), 
-	exp = expkernpath(x, y, Kmat, nlam, ulam, eps, maxit, omega, 
-        nobs),
-	hhsvm = hsvmpath(x, y, Kmat, nlam, ulam, eps, maxit, delta, 
-	        nobs),
 	er = erpath(x, y, Kmat, nlam, ulam, eps, maxit, omega, 
-        nobs))
+        nobs),
+    holder = holderkernpath(x, y, Kmat, nlam, ulam, eps, maxit, qval, 
+                            nobs), 
+    exp = expkernpath(x, y, Kmat, nlam, ulam, eps, maxit, omega, 
+                      nobs),
+    holderexp = holderexppath(x, y, Kmat, nlam, ulam, eps, maxit, qval, 
+                     nobs))
     fit$call <- this.call
     #################################################################################
     class(fit) <- c("kerneltool", class(fit))
