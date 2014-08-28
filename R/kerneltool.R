@@ -1,4 +1,4 @@
-kerneltool <- function(x, y, Kmat, method = c("er", "holder", "exp", "holderexp"), 					     
+kerneltool <- function(x, y, Kmat, method = c("expdirect","expfast", "exp", "holder", "holderexp"), 					     
 	lambda = NULL, eps = 1e-08, maxit = 1e+06, qval = 2, 
 	omega = 0.5, gamma = 1e-06) {
     #################################################################################
@@ -27,12 +27,14 @@ kerneltool <- function(x, y, Kmat, method = c("er", "holder", "exp", "holderexp"
     }
     #################################################################################
     fit <- switch(method, 
-	er = erpath(x, y, Kmat, nlam, ulam, eps, maxit, omega, 
+	expdirect = expdirect(x, y, Kmat, nlam, ulam, eps, maxit, omega, 
         nobs),
-    holder = holderkernpath(x, y, Kmat, nlam, ulam, eps, maxit, qval, 
-                            nobs), 
+	expfast = expfast(x, y, Kmat, nlam, ulam, eps, maxit, omega, 
+        nobs),
     exp = expkernpath(x, y, Kmat, nlam, ulam, eps, maxit, omega, 
                       nobs),
+    holder = holderkernpath(x, y, Kmat, nlam, ulam, eps, maxit, qval, 
+                            nobs), 
     holderexp = holderexppath(x, y, Kmat, nlam, ulam, eps, maxit, qval, 
                      nobs))
     fit$call <- this.call

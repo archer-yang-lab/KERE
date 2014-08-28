@@ -1,4 +1,4 @@
-erpath <- function(x, y, Kmat, nlam, ulam, 
+expfast <- function(x, y, Kmat, nlam, ulam, 
     eps, maxit, omega, nobs) {
     #################################################################################
     #data setup
@@ -59,6 +59,6 @@ erpath <- function(x, y, Kmat, nlam, ulam,
     ################################################################################
     # output
     outlist <- list(alpha = alpmat)
-    class(outlist) <- c("erpath")
+    class(outlist) <- c("expfast")
     outlist
 } 
