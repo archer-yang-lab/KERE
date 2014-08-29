@@ -1,5 +1,31 @@
 useDynLib("kerneltool")
 
-export(kerneltool)
+import("methods")
+
+export(kerneltool,
+
+## kernel functions
+"rbfdot",
+"laplacedot",
+"besseldot",
+"polydot",
+"tanhdot",
+"vanilladot",
+"anovadot",
+"splinedot",
+"stringdot",
+"kernelMatrix",
+"kernelMult",
+"kernelPol",
+"kernelFast",
+"as.kernelMatrix",
+"kpar"
+)
 
 S3method("plot","kerneltool")
+
+
+exportClasses("kernel", "rbfkernel", "laplacekernel",
+              "besselkernel", "tanhkernel", "polykernel","fourierkernel",
+              "vanillakernel", "anovakernel", "splinekernel",
+              "stringkernel","kernelMatrix")
