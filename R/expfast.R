@@ -23,7 +23,7 @@ expfast <- function(x, y, Kmat, nlam, ulam,
 		dif <- rep(NA, nobs+1)
 		# computing Ku inverse
 		vec_inv <- 1/(Dvec^2 + 2*nobs*ulam[l]*Dvec/mbd)
-		Ainv <- sweep(Umat,MARGIN=2,vec_inv,"*") %*% t(Umat)
+		Ainv <- tcrossprod(sweep(Umat,MARGIN=2,vec_inv,"*"),Umat)
 		BAmat <- - Ksum %o% drop(Ksum %*% Ainv) / nobs
 		Ginv <- 1 / (1 + sum(diag(BAmat)))
 		Qinv <- Ainv - Ginv * Ainv %*% BAmat
