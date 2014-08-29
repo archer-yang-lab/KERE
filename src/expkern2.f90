@@ -56,12 +56,12 @@ SUBROUTINE expkern2 (omega, Kmat, Umat, Dvec, Ksum, &
 	    Ddiag = 1.0D0/(Dvec*Dvec + 2.0D0*REAL(nobs)*ulam(l)*Dvec/mbd)
 		Ainv = Umat * SPREAD(Ddiag, DIM=1, NCOPIES = nobs)
 		Ainv = MATMUL(Ainv, TRANSPOSE(Umat))
-		Ktemp = MATMUL(Ksum, Ainv)		
+! 		CALL dblepr("Ainv",-1,Ainv,nobs)
+! 		CALL dblepr("Ksum",-1,Ksum,nobs)
+		Ktemp = MATMUL(Ksum, Ainv) 		
 		FORALL (i=1:nobs)
-		  FORALL(j=1:nobs) BAmat(i,j) = Ksum(i) * Ktemp(j)
+		  FORALL(j=1:nobs) BAmat(i,j) = - Ksum(i) * Ktemp(j) / REAL(nobs)
 		END FORALL
-		BAmat = - BAmat / REAL(nobs)
-		CALL dblepr("BAmat",-1,BAmat,nobs*nobs)
 		Ginv = 1.0D0
 		DO j = 1, nobs
 		    Ginv = Ginv + BAmat(j, j)

@@ -2,3 +2,4 @@ useDynLib("kerneltool")
 
 export(kerneltool)
 
+S3method("plot","kerneltool")

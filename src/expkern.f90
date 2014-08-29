@@ -58,8 +58,9 @@ SUBROUTINE expkern (omega, Kmat, Umat, Dvec, Ksum, Bmat, &
 		    Ddiag(j, j) = 1/(Dvec(j)*Dvec(j) + 2.0D0*REAL(nobs)*ulam(l)*Dvec(j)/mbd)
 	    ENDDO
 		Ainv = MATMUL(MATMUL(Umat,Ddiag), TRANSPOSE(Umat))
+! 		CALL dblepr("Ainv",-1,Ainv,nobs*nobs)
 		BAmat = MATMUL(Bmat, Ainv)
-		CALL dblepr("BAmat",-1,BAmat,nobs*nobs)
+! 		CALL dblepr("BAmat",-1,BAmat,nobs*nobs)
 		Ginv = 1.0D0
 		DO j = 1, nobs
 		    Ginv = Ginv + BAmat(j, j)
