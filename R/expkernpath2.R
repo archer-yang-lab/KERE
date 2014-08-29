@@ -1,0 +1,31 @@
+expkernpath2 <- function(x, y, Kmat, nlam, ulam, 
+    eps, maxit, omega, nobs) {
+    #################################################################################
+    #data setup
+    y <- as.double(y)
+    if (omega <= 0 || omega >= 1) 
+        stop("omega must be in (0,1)")
+	omega <- as.double(omega)
+    eigen_result <- eigen(Kmat, symmetric = TRUE)
+	Umat <- eigen_result$vectors
+	Dvec <- eigen_result$values
+	Ksum <- colSums(Kmat)
+ ################################################################################
+	#call Fortran core
+	fit <- .Fortran("expkern2", omega, 
+			as.double(Kmat), as.double(Umat),
+			as.double(Dvec), as.double(Ksum), 
+			nobs, as.double(y), nlam, ulam, eps, maxit, anlam = integer(1), 
+			npass = integer(nlam), jerr = integer(1), 
+			alpmat = double((nobs+1) * nlam),
+			PACKAGE = "kerneltool")
+    ################################################################################
+    # output
+    errmsg <- err(fit$jerr, maxit)
+    if(paste(errmsg$n)=='-1') print(errmsg$msg, call. = FALSE)
+	anlam <- fit$anlam
+    alpha <- matrix(fit$alpmat[seq((nobs+1) * anlam)], nobs+1, anlam) 
+    outlist <- list(alpha = alpha, lambda = ulam[seq(anlam)], npass = fit$npass[seq(anlam)], jerr = fit$jerr)
+    class(outlist) <- c("expkernpath2")
+    outlist
+} 

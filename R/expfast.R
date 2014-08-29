@@ -10,7 +10,7 @@ expfast <- function(x, y, Kmat, nlam, ulam,
 	Umat <- eigen_result$vectors
 	Dvec <- eigen_result$values
 	Ksum <- colSums(Kmat)
-	Bmat <- - Ksum %o% Ksum / nobs
+	# Bmat <- - Ksum %o% Ksum / nobs
 	#################################################################################
 	K0 = rbind(0, cbind(0, Kmat))
     Ki = rbind(1, Kmat)
@@ -22,8 +22,9 @@ expfast <- function(x, y, Kmat, nlam, ulam,
 	for(l in 1:nlam) {
 		dif <- rep(NA, nobs+1)
 		# computing Ku inverse
-		Ainv <- Umat %*% diag(1/(Dvec^2 + 2*nobs*ulam[l]*Dvec/mbd)) %*% t(Umat)
-		BAmat <- Bmat %*% Ainv
+		vec_inv <- 1/(Dvec^2 + 2*nobs*ulam[l]*Dvec/mbd)
+		Ainv <- sweep(Umat,MARGIN=2,vec_inv,"*") %*% t(Umat)
+		BAmat <- - Ksum %o% drop(Ksum %*% Ainv) / nobs
 		Ginv <- 1 / (1 + sum(diag(BAmat)))
 		Qinv <- Ainv - Ginv * Ainv %*% BAmat
 		QKsum <- Qinv %*% Ksum / nobs

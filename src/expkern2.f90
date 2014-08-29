@@ -1,5 +1,5 @@
 ! --------------------------------------------------
-SUBROUTINE expkern (omega, Kmat, Umat, Dvec, Ksum, Bmat, &
+SUBROUTINE expkern2 (omega, Kmat, Umat, Dvec, Ksum, &
 	& nobs, y, nlam, ulam, eps, &
     & maxit, anlam, npass, jerr, alpmat)
 ! --------------------------------------------------
@@ -17,12 +17,12 @@ SUBROUTINE expkern (omega, Kmat, Umat, Dvec, Ksum, Bmat, &
       DOUBLE PRECISION :: Umat (nobs, nobs)
       DOUBLE PRECISION :: Dvec (nobs)
       DOUBLE PRECISION :: Ksum (nobs)
-      DOUBLE PRECISION :: Bmat (nobs, nobs)
       DOUBLE PRECISION :: y (nobs)
       DOUBLE PRECISION :: ulam (nlam)
       DOUBLE PRECISION :: alpmat (nobs+1, nlam)
     ! - - - local declarations - - -
       INTEGER :: j
+      INTEGER :: i
       INTEGER :: l
       DOUBLE PRECISION :: K0 (nobs+1, nobs+1)
       DOUBLE PRECISION :: Ki (nobs+1, nobs)
@@ -33,13 +33,13 @@ SUBROUTINE expkern (omega, Kmat, Umat, Dvec, Ksum, Bmat, &
 	  DOUBLE PRECISION :: alpvec (nobs+1)
 	  DOUBLE PRECISION :: oalpvec (nobs+1)
 	  DOUBLE PRECISION :: dif (nobs+1)
-	  DOUBLE PRECISION :: Ddiag (nobs, nobs)
+	  DOUBLE PRECISION :: Ddiag (nobs)
 	  DOUBLE PRECISION :: Ainv (nobs, nobs)
 	  DOUBLE PRECISION :: BAmat (nobs, nobs)
 	  DOUBLE PRECISION :: Qinv (nobs, nobs)
 	  DOUBLE PRECISION :: QKsum (nobs)
 	  DOUBLE PRECISION :: KUinv (nobs+1, nobs+1)
-    
+	  DOUBLE PRECISION :: Ktemp (nobs)
     ! - - - begin - - -
     K0 = 0.0D0
     K0(2:(nobs+1),2:(nobs+1)) = Kmat
@@ -53,12 +53,14 @@ SUBROUTINE expkern (omega, Kmat, Umat, Dvec, Ksum, Bmat, &
 	DO l = 1,nlam
 		dif = 0.0D0
 	! - - - computing Ku inverse - - - 
-	    Ddiag = 0.0D0
-	    DO j = 1, nobs
-		    Ddiag(j, j) = 1/(Dvec(j)*Dvec(j) + 2.0D0*REAL(nobs)*ulam(l)*Dvec(j)/mbd)
-	    ENDDO
-		Ainv = MATMUL(MATMUL(Umat,Ddiag), TRANSPOSE(Umat))
-		BAmat = MATMUL(Bmat, Ainv)
+	    Ddiag = 1.0D0/(Dvec*Dvec + 2.0D0*REAL(nobs)*ulam(l)*Dvec/mbd)
+		Ainv = Umat * SPREAD(Ddiag, DIM=1, NCOPIES = nobs)
+		Ainv = MATMUL(Ainv, TRANSPOSE(Umat))
+		Ktemp = MATMUL(Ksum, Ainv)		
+		FORALL (i=1:nobs)
+		  FORALL(j=1:nobs) BAmat(i,j) = Ksum(i) * Ktemp(j)
+		END FORALL
+		BAmat = - BAmat / REAL(nobs)
 		CALL dblepr("BAmat",-1,BAmat,nobs*nobs)
 		Ginv = 1.0D0
 		DO j = 1, nobs
@@ -98,4 +100,4 @@ SUBROUTINE expkern (omega, Kmat, Umat, Dvec, Ksum, Bmat, &
 		anlam = l
 	ENDDO
 
-END SUBROUTINE expkern
+END SUBROUTINE expkern2
