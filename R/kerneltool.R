@@ -1,4 +1,4 @@
-kerneltool <- function(x, y, kern, method = c("expdirect","expfast", "exp", "exp2", "holder", "holderexp"), 					     
+kerneltool <- function(x, y, kern, method = c("exp2", "holder", "holderexp"), 					     
 	lambda = NULL, eps = 1e-08, maxit = 1e+06, qval = 2, 
 	omega = 0.5, gamma = 1e-06) {
     #################################################################################
@@ -27,12 +27,12 @@ kerneltool <- function(x, y, kern, method = c("expdirect","expfast", "exp", "exp
     }
     #################################################################################
     fit <- switch(method, 
-	expdirect = expdirect(x, y, Kmat, nlam, ulam, eps, maxit, omega, 
-        nobs),
-	expfast = expfast(x, y, Kmat, nlam, ulam, eps, maxit, omega, 
-        nobs),
-    exp = expkernpath(x, y, Kmat, nlam, ulam, eps, maxit, omega, 
-                      nobs),
+	# expdirect = expdirect(x, y, Kmat, nlam, ulam, eps, maxit, omega, 
+	#         nobs),
+	# expfast = expfast(x, y, Kmat, nlam, ulam, eps, maxit, omega, 
+	#         nobs),
+    # exp = expkernpath(x, y, Kmat, nlam, ulam, eps, maxit, omega, 
+    #                   nobs),
     exp2 = expkernpath2(x, y, Kmat, nlam, ulam, eps, maxit, omega, 
                       nobs),
     holder = holderkernpath(x, y, Kmat, nlam, ulam, eps, maxit, qval, 
