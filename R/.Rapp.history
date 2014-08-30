@@ -1,10 +1,11 @@
-source("kernels.R", chdir = TRUE)#
+setwd('/Users/emeryyi/Dropbox/Research/13_kernel_expectile/script_data')
 source("source.R") # R code for generating the FHT data#
 library(kerneltool)#
-nobs = 100#
-p = 200#
+nobs = 20#
+p = 20#
 rho = 0.9#
 #
+omega = 0.3#
 x=genx2(nobs,p,rho)#
 y=genjerry(x,3)#
 ## initialize kernel function#
@@ -13,16 +14,19 @@ rbf <- polydot(degree = 1, scale = 1, offset = 1)#
 ## calculate kernel matrix#
 Kmat <- kernelMatrix(rbf,x)#
 #
-ulam  <-  c(0.4,0.5,0.6,0.7)#
+ulam  <- seq(0.4,10,0.01)#
 #
-m1 <- kerneltool(x, y, Kmat, method = "er", 					     #
+system.time(m1 <- kerneltool(x, y, rbf, method = "exp", 					     #
 	lambda = ulam, eps = 1e-14, maxit = 1e6, #
-	omega = 0.3, gamma = 1e-06)#
-#
-fit = m1
-setwd('/Users/emeryyi/Dropbox/Research/13_kernel_expectile/script_data')
-anlam <- fit$anlam
-anlam
-setwd('/Users/emeryyi/Dropbox/Research/googleproject/kerneltool/R')
-alpha <- matrix(fit$alpmat[seq((nobs+1) * anlam)], nobs+1, anlam)
+	omega = omega, gamma = 1e-06))#
+system.time(m2 <- kerneltool(x, y, rbf, method = "exp2", 					     #
+		lambda = ulam, eps = 1e-14, maxit = 1e6, #
+		omega = omega, gamma = 1e-06))
+object =m2
+alpha <- object$alpha
 alpha
+m2
+setwd('/Users/emeryyi/Dropbox/Research/googleproject/kerneltool/R')
+object = m2
+object
+object$alpha

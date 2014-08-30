@@ -1,4 +1,4 @@
-kerneltool <- function(x, y, kernel, method = c("expdirect","expfast", "exp", "exp2", "holder", "holderexp"), 					     
+kerneltool <- function(x, y, kern, method = c("expdirect","expfast", "exp", "exp2", "holder", "holderexp"), 					     
 	lambda = NULL, eps = 1e-08, maxit = 1e+06, qval = 2, 
 	omega = 0.5, gamma = 1e-06) {
     #################################################################################
@@ -7,7 +7,7 @@ kerneltool <- function(x, y, kernel, method = c("expdirect","expfast", "exp", "e
     this.call <- match.call()
     y <- drop(y)
     x <- as.matrix(x)
-	Kmat <- kernelMatrix(kernel,x)
+	Kmat <- kernelMatrix(kern,x)
     diag(Kmat) <- diag(Kmat) + gamma 
     np <- dim(x)
     nobs <- as.integer(np[1])
@@ -42,5 +42,6 @@ kerneltool <- function(x, y, kernel, method = c("expdirect","expfast", "exp", "e
     fit$call <- this.call
     #################################################################################
     class(fit) <- c("kerneltool", class(fit))
+    fit$kern = kern
     fit
 } 
