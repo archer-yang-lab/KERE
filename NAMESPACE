@@ -3,6 +3,8 @@ useDynLib("kerneltool")
 import("methods")
 
 export(kerneltool,
+predict.kerneltool,
+predict.expkern2,
 
 ## kernel functions
 "rbfdot",
@@ -23,6 +25,7 @@ export(kerneltool,
 )
 
 S3method("plot","kerneltool")
+S3method("predict","kerneltool")
 
 
 exportClasses("kernel", "rbfkernel", "laplacekernel",

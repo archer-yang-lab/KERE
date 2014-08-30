@@ -1,32 +1,38 @@
 setwd('/Users/emeryyi/Dropbox/Research/13_kernel_expectile/script_data')
 source("source.R") # R code for generating the FHT data#
 library(kerneltool)#
-nobs = 20#
-p = 20#
+nobs = 3#
+p = 2#
 rho = 0.9#
 #
 omega = 0.3#
 x=genx2(nobs,p,rho)#
 y=genjerry(x,3)#
 ## initialize kernel function#
-rbf <- polydot(degree = 1, scale = 1, offset = 1)#
+rbf <- vanilladot()#
 #
 ## calculate kernel matrix#
 Kmat <- kernelMatrix(rbf,x)#
 #
-ulam  <- seq(0.4,10,0.01)#
-#
-system.time(m1 <- kerneltool(x, y, rbf, method = "exp", 					     #
-	lambda = ulam, eps = 1e-14, maxit = 1e6, #
-	omega = omega, gamma = 1e-06))#
+ulam  <- c(0.4,0.5)#
 system.time(m2 <- kerneltool(x, y, rbf, method = "exp2", 					     #
 		lambda = ulam, eps = 1e-14, maxit = 1e6, #
-		omega = omega, gamma = 1e-06))
-object =m2
-alpha <- object$alpha
-alpha
-m2
+		omega = omega, gamma = 1e-06))#
+#
+object = m2#
+kern = rbf#
+newx = x[1:2,] - 1
+nfit  <- kernelMult(kern, x, newx, object$alpha[-1, ])#
+    sweep(nfit, MARGIN = 2, object$alpha[1, ], "+")#
+	nfit
+z
+object$alpha[-1, ]
+nfit  <- kernelMult(kern, newx, x, object$alpha[-1, ])
+sweep(nfit, MARGIN = 2, object$alpha[1, ], "+")
+nfit <- sweep(nfit, MARGIN = 2, object$alpha[1, ], "+")
 setwd('/Users/emeryyi/Dropbox/Research/googleproject/kerneltool/R')
-object = m2
-object
-object$alpha
+nfit
+x
+newx
+x%*%newx
+x%o%newx

@@ -42,6 +42,5 @@ kerneltool <- function(x, y, kern, method = c("expdirect","expfast", "exp", "exp
     fit$call <- this.call
     #################################################################################
     class(fit) <- c("kerneltool", class(fit))
-    fit$kern = kern
     fit
 } 
