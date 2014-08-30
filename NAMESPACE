@@ -28,4 +28,4 @@ S3method("plot","kerneltool")
 exportClasses("kernel", "rbfkernel", "laplacekernel",
               "besselkernel", "tanhkernel", "polykernel","fourierkernel",
               "vanillakernel", "anovakernel", "splinekernel",
-              "stringkernel","kernelMatrix")
+              "stringkernel","kernelMatrix","kfunction")
