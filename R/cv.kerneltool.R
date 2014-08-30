@@ -27,7 +27,7 @@ cv.kerneltool <- function(x, y, kern, lambda = NULL,
     cvsd <- cvstuff$cvsd
     cvname <- cvstuff$name
     out <- list(lambda = lambda, cvm = cvm, cvsd = cvsd, cvupper = cvm + 
-        cvsd, cvlo = cvm - cvsd, nzero = nz, name = cvname, kerneltool.fit = kerneltool.object)
+        cvsd, cvlo = cvm - cvsd, name = cvname)
     lamin <- getmin(lambda, cvm, cvsd)
     obj <- c(out, as.list(lamin))
     class(obj) <- "cv.kerneltool"

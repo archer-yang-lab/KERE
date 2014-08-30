@@ -4,7 +4,9 @@ import("methods")
 
 export(kerneltool,
 predict.kerneltool,
-predict.expkern2,
+predict.expkernpath2,
+cv.kerneltool,
+cv.expkernpath2,
 
 ## kernel functions
 "rbfdot",
@@ -25,6 +27,7 @@ predict.expkern2,
 )
 
 S3method("plot","kerneltool")
+S3method("plot","cv.kerneltool")
 S3method("predict","kerneltool")
 
 
