@@ -21,6 +21,7 @@ cv.kerneltool <- function(x, y, kern, lambda = NULL,
     }
     ###What to do depends on the pred.loss and the model fit
     fun <- paste("cv", class(outlist[[1]])[[2]], sep = ".")
+    lambda <- outlist[[1]]$lambda
     cvstuff <- do.call(fun, list(outlist, lambda, x, y, kern, foldid, 
         pred.loss, qval, omega))
     cvm <- cvstuff$cvm
