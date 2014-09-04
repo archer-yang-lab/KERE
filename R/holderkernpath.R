@@ -18,7 +18,7 @@ holderkernpath <- function(x, y, Kmat, nlam, ulam,
    	#call Fortran core
     fit <- .Fortran("holderkern", qval, 
 			as.double(Kmat), as.double(Umat),
-			as.double(Dvec), as.double(Ksum), as.double(Bmat), 
+			as.double(Dvec), as.double(Ksum), 
 			nobs, as.double(y), nlam, ulam, eps, maxit, anlam = integer(1), 
 			npass = integer(nlam), jerr = integer(1), 
 			alpmat = double((nobs+1) * nlam),

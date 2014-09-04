@@ -7,7 +7,7 @@ kerneltool <- function(x, y, kern, method = c("exp2", "holder", "holderexp"),
     this.call <- match.call()
     y <- drop(y)
     x <- as.matrix(x)
-	Kmat <- kernelMatrix(kern,x)
+	  Kmat <- kernelMatrix(kern,x)
     diag(Kmat) <- diag(Kmat) + gamma 
     np <- dim(x)
     nobs <- as.integer(np[1])
@@ -37,8 +37,9 @@ kerneltool <- function(x, y, kern, method = c("exp2", "holder", "holderexp"),
                       nobs),
     holder = holderkernpath(x, y, Kmat, nlam, ulam, eps, maxit, qval, 
                             nobs), 
-    holderexp = holderexppath(x, y, Kmat, nlam, ulam, eps, maxit, qval, 
-                     nobs))
+    #holderexp = holderexppath(x, y, Kmat, nlam, ulam, eps, maxit, qval, 
+    #                 nobs)
+    )
     fit$call <- this.call
     #################################################################################
     class(fit) <- c("kerneltool", class(fit))

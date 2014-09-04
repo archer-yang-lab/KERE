@@ -1,5 +1,5 @@
       ! --------------------------------------------------
-      SUBROUTINE holderkern (qval, Kmat, Umat, Dvec, Ksum, Bmat, &
+      SUBROUTINE holderkern (qval, Kmat, Umat, Dvec, Ksum, &
          & nobs, y, nlam, ulam, eps, &
           & maxit, anlam, npass, jerr, alpmat)
       ! --------------------------------------------------
@@ -23,6 +23,7 @@
             DOUBLE PRECISION :: alpmat (nobs+1, nlam)
             ! - - - local declarations - - -
             INTEGER :: j
+            INTEGER :: i
             INTEGER :: l
             DOUBLE PRECISION :: K0 (nobs+1, nobs+1)
             DOUBLE PRECISION :: Ki (nobs+1, nobs)
@@ -37,12 +38,13 @@
             DOUBLE PRECISION :: alpvec (nobs+1)
             DOUBLE PRECISION :: oalpvec (nobs+1)
             DOUBLE PRECISION :: dif (nobs+1)
-            DOUBLE PRECISION :: Ddiag (nobs, nobs)
+            DOUBLE PRECISION :: Ddiag (nobs)
             DOUBLE PRECISION :: Ainv (nobs, nobs)
             DOUBLE PRECISION :: BAmat (nobs, nobs)
             DOUBLE PRECISION :: Qinv (nobs, nobs)
             DOUBLE PRECISION :: QKsum (nobs)
             DOUBLE PRECISION :: KUinv (nobs+1, nobs+1)
+            DOUBLE PRECISION :: Ktemp (nobs)
           
             ! - - - begin - - -
             K0 = 0.0D0
@@ -62,13 +64,16 @@
             lambda_loop: DO l = 1,nlam
                dif = 0.0D0
             ! - - - computing Ku inverse - - - 
-                Ddiag = 0.0D0
-                DO j = 1, nobs
-                   Ddiag(j, j) = 1/(Dvec(j)*Dvec(j) &
-                   & + 2.0D0*nobs*ulam(l)*Dvec(j)*minv)
-                ENDDO
-               Ainv = MATMUL(MATMUL(Umat,Ddiag), TRANSPOSE(Umat))
-               BAmat = MATMUL(Bmat, Ainv)
+               Ddiag = 0.0D0
+               Ddiag = 1/(Dvec * Dvec &
+               & + 2.0D0 * REAL(nobs) * ulam(l) * Dvec(j) * minv)
+	         	Ainv = MATMUL(Umat * SPREAD(Ddiag, DIM=1, &
+               & NCOPIES = nobs), TRANSPOSE(Umat))
+               Ktemp = MATMUL(Ksum, Ainv) 		
+		         FORALL (i=1:nobs)
+		            FORALL(j=1:nobs) BAmat(i,j) = - Ksum(i) * Ktemp(j) &
+                  & / REAL(nobs)
+		         END FORALL
                Ginv = 1.0D0
                DO j = 1, nobs
                    Ginv = Ginv + BAmat(j, j)

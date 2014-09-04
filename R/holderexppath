@@ -1,4 +1,4 @@
-hsvmpath <- function(x, y, Kmat, nlam, ulam, 
+holderexppath <- function(x, y, Kmat, nlam, ulam, 
     eps, maxit, delta, nobs) {
     #################################################################################
     #data setup
