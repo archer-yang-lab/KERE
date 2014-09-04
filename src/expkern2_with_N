@@ -53,9 +53,11 @@ SUBROUTINE expkern2 (omega, Kmat, Umat, Dvec, Ksum, &
 	DO l = 1,nlam
 		dif = 0.0D0
 	! - - - computing Ku inverse - - - 
-	    Ddiag = 1.0D0/(Dvec*Dvec + 2.0D0*ulam(l)*Dvec/mbd)
+	    Ddiag = 1.0D0/(Dvec*Dvec + 2.0D0*REAL(nobs)*ulam(l)*Dvec/mbd)
 		Ainv = Umat * SPREAD(Ddiag, DIM=1, NCOPIES = nobs)
 		Ainv = MATMUL(Ainv, TRANSPOSE(Umat))
+! 		CALL dblepr("Ainv",-1,Ainv,nobs)
+! 		CALL dblepr("Ksum",-1,Ksum,nobs)
 		Ktemp = MATMUL(Ksum, Ainv) 		
 		FORALL (i=1:nobs)
 		  FORALL(j=1:nobs) BAmat(i,j) = - Ksum(i) * Ktemp(j) / REAL(nobs)
@@ -82,8 +84,8 @@ SUBROUTINE expkern2 (omega, Kmat, Umat, Dvec, Ksum, &
                 END IF
             END DO
 		    oalpvec = alpvec
-		    alpvec =  oalpvec + (2.0D0/mbd) * MATMUL(KUinv, & 
-	     	          & (-ulam(l)*MATMUL(K0, oalpvec) + 0.5D0*MATMUL(Ki, phi)))
+		    alpvec =  oalpvec + (2.0D0*REAL(nobs)/mbd) * MATMUL(KUinv, & 
+	     	          & (-ulam(l)*MATMUL(K0, oalpvec) + 0.5D0*MATMUL(Ki, phi)/REAL(nobs)))
 		    dif = alpvec - oalpvec
 		    r = r - MATMUL(dif, Ki)
 		    IF (DOT_PRODUCT(dif,dif)/DOT_PRODUCT(oalpvec,oalpvec) < eps) EXIT
