@@ -1,4 +1,4 @@
-kerneltool <- function(x, y, kern, method = c("exp2", "holder", "holderexp"), 					     
+kerneltool <- function(x, y, kern, method = c("exp2", "holder"), 					     
 	lambda = NULL, eps = 1e-08, maxit = 1e+06, qval = 2, 
 	omega = 0.5, gamma = 1e-06) {
     #################################################################################
@@ -36,7 +36,7 @@ kerneltool <- function(x, y, kern, method = c("exp2", "holder", "holderexp"),
     exp2 = expkernpath2(x, y, Kmat, nlam, ulam, eps, maxit, omega, 
                       nobs),
     holder = holderkernpath(x, y, Kmat, nlam, ulam, eps, maxit, qval, 
-                            nobs), 
+                            nobs) 
     #holderexp = holderexppath(x, y, Kmat, nlam, ulam, eps, maxit, qval, 
     #                 nobs)
     )
