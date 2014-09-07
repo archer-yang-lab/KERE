@@ -13,5 +13,6 @@ cv2d.kerneltool <- function(x, y, kname = "rbfdot", lambda = NULL, sigma = NULL,
 		}
 		loc.lambda <- which(mm.lambda == lambda)
 		list(mm.cvm = mm.cvm, loc.lambda = loc.lambda,
-			 loc.sigma = loc.sigma)
+			 loc.sigma = loc.sigma, mm.lambda = mm.lambda, 
+			 mm.sigma = sigma[loc.sigma])
 } 
