@@ -1,12 +1,17 @@
 cv2d.kerneltool <- function(x, y, kname = "rbfdot", lambda = NULL, sigma = NULL, ...) {
 		if (is.null(sigma)) {
 	        stop("user must provide a sigma sequence")}
-		nsigma <- length(sigma)
-		cputime <- rep(NA, nsigma)
-		for(i in seq.int(nsigma)){
+		mm.cvm <- Inf
+		for(i in seq.int(length(sigma))){
 			kern <- do.call(kname, list(sigma[i]))
-			cputime[i] <- system.time(cv_out <- cv.kerneltool(x, y, kern,					     
-					lambda = lambda, ...))[3]
-			which <- (cvout$lambda == cvout$lambda.min)				
+			cv_out <- cv.kerneltool(x, y, kern, lambda = lambda, ...)
+			if(mm.cvm > cv_out$cvm.min){
+				mm.cvm <- cv_out$cvm.min
+				mm.lambda <- cv_out$lambda.min
+				loc.sigma <- i
 			}
+		}
+		loc.lambda <- which(mm.lambda == lambda)
+		list(mm.cvm = mm.cvm, loc.lambda = loc.lambda,
+			 loc.sigma = loc.sigma)
 } 

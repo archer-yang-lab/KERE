@@ -1,4 +1,5 @@
-setwd('/Users/emeryyi/Dropbox/Research/13_ker/script_data/test')
+sigma = seq(0.01,0.5,0.05)
+sigma
 source("source.R") # R code for generating the FHT data#
 library(kerneltool)#
 nobs = 100#
@@ -7,20 +8,37 @@ rho = 0.1#
 #
 omega = 0.5#
 x=genx2(nobs,p,rho)#
-y=genjerry(x,3)#
-#
-# z_sigma = 10^(-1.2)#
-## initialize kernel function#
+y=genjerry(x,3)
 kern <- rbfdot(sigma=0.001)#
 # kern <- rbfdot(sigma=1/(2*z_sigma^2))#
 kern#
+kname = "rbfdot"#
+#
 ## calculate kernel matrix#
 nlam = 10#
 ulam.max = 10^(-0.1)#
 ulam.min = 10^(-4)#
-ulam <- exp(seq(log(ulam.max),log(ulam.min),len=nlam))
-setwd('/Users/emeryyi/Dropbox/Research/googleproject/kerneltool/R')
+ulam <- exp(seq(log(ulam.max),log(ulam.min),len=nlam))#
+lambda <- ulam
+setwd('/Users/emeryyi/Dropbox/Research/13_ker/script_data/test')
+if (is.null(sigma)) {#
+    stop("user must provide a sigma sequence")}
 if (is.null(sigma)) {#
 	        stop("user must provide a sigma sequence")}#
 		nsigma <- length(sigma)#
-		cputime <- rep(NA, nsigma)
+		cputime <- rep(NA, nsigma)#
+		mm.cvm <- Inf#
+		for(i in seq.int(nsigma)){#
+			kern <- do.call(kname, list(sigma[i]))#
+			cputime[i] <- system.time(cv_out <- cv.kerneltool(x, y, #
+				kern, lambda = lambda))[3]#
+			if(mm.cvm > cv_out$cvm.min){#
+				mm.cvm <- cv_out$cvm.min#
+				mm.lambda <- cv_out$lambda.min#
+				loc.sigma <- i#
+			}#
+		}
+setwd('/Users/emeryyi/Dropbox/Research/googleproject/kerneltool/R')
+loc.lambda <- which(mm.lambda == lambda)#
+		list(mm.cvm = mm.cvm, loc.lambda = loc.lambda,#
+			 loc.sigma = loc.sigma)
