@@ -1,5 +1,5 @@
 cv.kerneltool <- function(x, y, kern, lambda = NULL, 
-	pred.loss = c("misclass", "loss"), nfolds = 5, foldid, qval = 2.0, omega = 0.5, ...) {
+	pred.loss = c("loss", "misclass"), nfolds = 5, foldid, qval = 2.0, omega = 0.5, ...) {
     if (missing(pred.loss)) 
         pred.loss <- "default" else pred.loss <- match.arg(pred.loss)
     N <- nrow(x)
