@@ -5,8 +5,10 @@ import("methods")
 export(kerneltool,
 predict.kerneltool,
 predict.expkernpath2,
+predict.holderkernpath,
 cv.kerneltool,
 cv.expkernpath2,
+cv.holderkernpath,
 
 ## kernel functions
 "rbfdot",

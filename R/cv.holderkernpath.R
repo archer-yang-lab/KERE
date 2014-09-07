@@ -1,4 +1,4 @@
-cv.expkernpath2 <- function(outlist, lambda, x, y, kern, foldid, 
+cv.holderkernpath <- function(outlist, lambda, x, y, kern, foldid, 
                             pred.loss, qval, omega) {
   typenames <- c(misclass = "Misclassification Error", loss = "Holder Loss")
   if (pred.loss == "default") 
@@ -24,7 +24,7 @@ cv.expkernpath2 <- function(outlist, lambda, x, y, kern, foldid,
     nlams[i] <- nlami
   }
   cvraw <- switch(pred.loss, 
-                  loss = hdloss(y * predmat, qv),
+                  loss = hdloss(y * predmat, qval),
                   misclass = (y != ifelse(predmat > 0, 1, -1)))
   cvob <- cvcompute(cvraw, foldid, nlams)
   cvraw <- cvob$cvraw

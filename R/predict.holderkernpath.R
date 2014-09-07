@@ -1,4 +1,4 @@
-predict.holderkernpath2 <- function(object, kern, x, newx,
+predict.holderkernpath <- function(object, kern, x, newx,
                                  type = c("class", "link"), ...) {
   type <- match.arg(type)
   nfit <- kernelMult(kern, newx, x, object$alpha[-1, ])
