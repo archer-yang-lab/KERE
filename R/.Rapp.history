@@ -1,38 +1,26 @@
-setwd('/Users/emeryyi/Dropbox/Research/13_kernel_expectile/script_data')
+setwd('/Users/emeryyi/Dropbox/Research/13_ker/script_data/test')
 source("source.R") # R code for generating the FHT data#
 library(kerneltool)#
-nobs = 3#
-p = 2#
-rho = 0.9#
+nobs = 100#
+p = 20#
+rho = 0.1#
 #
-omega = 0.3#
+omega = 0.5#
 x=genx2(nobs,p,rho)#
 y=genjerry(x,3)#
+#
+# z_sigma = 10^(-1.2)#
 ## initialize kernel function#
-rbf <- vanilladot()#
-#
+kern <- rbfdot(sigma=0.001)#
+# kern <- rbfdot(sigma=1/(2*z_sigma^2))#
+kern#
 ## calculate kernel matrix#
-Kmat <- kernelMatrix(rbf,x)#
-#
-ulam  <- c(0.4,0.5)#
-system.time(m2 <- kerneltool(x, y, rbf, method = "exp2", 					     #
-		lambda = ulam, eps = 1e-14, maxit = 1e6, #
-		omega = omega, gamma = 1e-06))#
-#
-object = m2#
-kern = rbf#
-newx = x[1:2,] - 1
-nfit  <- kernelMult(kern, x, newx, object$alpha[-1, ])#
-    sweep(nfit, MARGIN = 2, object$alpha[1, ], "+")#
-	nfit
-z
-object$alpha[-1, ]
-nfit  <- kernelMult(kern, newx, x, object$alpha[-1, ])
-sweep(nfit, MARGIN = 2, object$alpha[1, ], "+")
-nfit <- sweep(nfit, MARGIN = 2, object$alpha[1, ], "+")
+nlam = 10#
+ulam.max = 10^(-0.1)#
+ulam.min = 10^(-4)#
+ulam <- exp(seq(log(ulam.max),log(ulam.min),len=nlam))
 setwd('/Users/emeryyi/Dropbox/Research/googleproject/kerneltool/R')
-nfit
-x
-newx
-x%*%newx
-x%o%newx
+if (is.null(sigma)) {#
+	        stop("user must provide a sigma sequence")}#
+		nsigma <- length(sigma)#
+		cputime <- rep(NA, nsigma)
