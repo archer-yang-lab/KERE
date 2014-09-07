@@ -11,7 +11,6 @@ err <- function(n, maxit) {
     list(n = n, msg = msg)
 }
 
-
 cvcompute <- function(mat, foldid, nlams) {
     ###Computes the weighted mean and SD within folds, and
     #   hence
@@ -33,6 +32,15 @@ ercls <- function(r, omega) {
   abs(omega - (r < 0)) * r^2
 }
 
+error.bars <- function(x, upper, lower, width = 0.02, 
+                       ...) {
+  xlim <- range(x)
+  barw <- diff(xlim) * width
+  segments(x, upper, x, lower, ...)
+  segments(x - barw, upper, x + barw, upper, ...)
+  segments(x - barw, lower, x + barw, lower, ...)
+  range(upper, lower)
+}
 
 getmin <- function(lambda, cvm, cvsd) {
     cvmin <- min(cvm)
@@ -45,15 +53,12 @@ getmin <- function(lambda, cvm, cvsd) {
     list(lambda.min = lambda.min, lambda.1se = lambda.1se)
 }
 
-error.bars <- function(x, upper, lower, width = 0.02, 
-    ...) {
-    xlim <- range(x)
-    barw <- diff(xlim) * width
-    segments(x, upper, x, lower, ...)
-    segments(x - barw, upper, x + barw, upper, ...)
-    segments(x - barw, lower, x + barw, lower, ...)
-    range(upper, lower)
+hdloss = function(u, qv) {
+  ## Holder Loss
+  ifelse(u > (qv/(qv+1)), 
+         1/(u^qv)*(qv^qv)/((qv+1)^(qv+1)), 1 - u )
 }
+
 
 
 
