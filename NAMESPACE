@@ -7,6 +7,7 @@ predict.kerneltool,
 predict.expkernpath2,
 predict.holderkernpath,
 cv.kerneltool,
+cv2d.kerneltool,
 cv.expkernpath2,
 cv.holderkernpath,
 

@@ -46,11 +46,14 @@ getmin <- function(lambda, cvm, cvsd) {
     cvmin <- min(cvm)
     idmin <- cvm <= cvmin
     lambda.min <- max(lambda[idmin])
+    cv.min <- max(cvm[idmin])
     idmin <- match(lambda.min, lambda)
     semin <- (cvm + cvsd)[idmin]
     idmin <- cvm <= semin
     lambda.1se <- max(lambda[idmin])
-    list(lambda.min = lambda.min, lambda.1se = lambda.1se)
+    cv.1se <- max(cvm[idmin])
+    list(lambda.min = lambda.min, lambda.1se = lambda.1se, 
+	cvm.min = cvm.min, cvm.1se = cvm.1se)
 }
 
 hdloss = function(u, qv) {
