@@ -5,6 +5,7 @@ cv.kerneltool <- function(x, y, kern, lambda = NULL,
     N <- nrow(x)
     ###Fit the model once to get dimensions etc of output
     y <- drop(y)
+    x <- as.matrix(x)
     # predict -> coef
     if (missing(foldid)) 
         foldid <- sample(rep(seq(nfolds), length = N)) else nfolds <- max(foldid)
