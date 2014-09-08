@@ -10,6 +10,7 @@ cv2d.kerneltool <- function(x, y, kname = "rbfdot", lambda = NULL, sigma = NULL,
 				mm.lambda <- cv_out$lambda.min
 				loc.sigma <- i
 			}
+			cat("sigma ", i, " completed.\n")
 		}
 		loc.lambda <- which(mm.lambda == lambda)
 		list(mm.cvm = mm.cvm, loc.lambda = loc.lambda,
