@@ -1,4 +1,4 @@
-expkernpath2 <- function(x, y, Kmat, nlam, ulam, 
+expkernpath <- function(x, y, Kmat, nlam, ulam, 
     eps, maxit, omega, nobs) {
     #################################################################################
     #data setup
@@ -12,7 +12,7 @@ expkernpath2 <- function(x, y, Kmat, nlam, ulam,
 	Ksum <- colSums(Kmat)
  ################################################################################
 	#call Fortran core
-	fit <- .Fortran("expkern2", omega, 
+	fit <- .Fortran("expkern", omega, 
 			as.double(Kmat), as.double(Umat),
 			as.double(Dvec), as.double(Ksum), 
 			nobs, as.double(y), nlam, ulam, eps, maxit, anlam = integer(1), 
@@ -26,6 +26,6 @@ expkernpath2 <- function(x, y, Kmat, nlam, ulam,
 	anlam <- fit$anlam
     alpha <- matrix(fit$alpmat[seq((nobs+1) * anlam)], nobs+1, anlam) 
     outlist <- list(alpha = alpha, lambda = ulam[seq(anlam)], npass = fit$npass[seq(anlam)], jerr = fit$jerr)
-    class(outlist) <- c("expkernpath2")
+    class(outlist) <- c("expkernpath")
     outlist
 } 

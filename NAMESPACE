@@ -4,11 +4,11 @@ import("methods")
 
 export(kerneltool,
 predict.kerneltool,
-predict.expkernpath2,
+predict.expkernpath,
 predict.holderkernpath,
 cv.kerneltool,
 cv2d.kerneltool,
-cv.expkernpath2,
+cv.expkernpath,
 cv.holderkernpath,
 
 ## kernel functions

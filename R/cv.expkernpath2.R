@@ -1,4 +1,4 @@
-cv.expkernpath2 <- function(outlist, lambda, x, y, kern, foldid, 
+cv.expkernpath <- function(outlist, lambda, x, y, kern, foldid, 
     pred.loss, qval, omega) {
     typenames <- c(misclass = "Misclassification Error", loss = "Expectile Loss")
     if (pred.loss == "default") 

@@ -1,5 +1,5 @@
 ! --------------------------------------------------
-SUBROUTINE expkern2 (omega, Kmat, Umat, Dvec, Ksum, &
+SUBROUTINE expkern (omega, Kmat, Umat, Dvec, Ksum, &
 	& nobs, y, nlam, ulam, eps, &
     & maxit, anlam, npass, jerr, alpmat)
 ! --------------------------------------------------
@@ -98,4 +98,4 @@ SUBROUTINE expkern2 (omega, Kmat, Umat, Dvec, Ksum, &
 		anlam = l
 	ENDDO
 
-END SUBROUTINE expkern2
+END SUBROUTINE expkern

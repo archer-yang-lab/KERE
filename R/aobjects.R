@@ -1,9 +1,3 @@
-## S4 object definitions and assigment/accessor functions for the slots.
-##
-## created  10.09.03 alexandros karatzoglou
-## updated  23.08.05 
-
-
 setClass("kernel",representation("function",kpar="list"))
 setClass("kernelMatrix",representation("matrix"),prototype=structure(.Data=matrix()))
 
