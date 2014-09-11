@@ -19,7 +19,7 @@ cv.kerneltool <- function(x, y, kern, lambda = NULL,
         outlist[[i]] <- kerneltool(x = x[!which, , drop = FALSE], 
             y = y_sub, kern = kern, lambda = lambda, 
 			qval = qval, omega = omega, ...)
-		cat("fold ", i, " completed.\n")
+		#cat("fold ", i, " completed.\n")
     }
     ###What to do depends on the pred.loss and the model fit
     fun <- paste("cv", class(outlist[[1]])[[2]], sep = ".")
