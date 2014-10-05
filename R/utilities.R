@@ -54,11 +54,6 @@ getmin <- function(lambda, cvm, cvsd) {
 	cvm.min = cvmin)
 }
 
-hdloss = function(u, qv) {
-  ## Holder Loss
-  ifelse(u > (qv/(qv+1)), 
-         1/(u^qv)*(qv^qv)/((qv+1)^(qv+1)), 1 - u )
-}
 
 
 

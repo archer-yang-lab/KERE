@@ -4,12 +4,8 @@ import("methods")
 
 export(kerneltool,
 predict.kerneltool,
-predict.expkernpath,
-predict.holderkernpath,
 cv.kerneltool,
 cv2d.kerneltool,
-cv.expkernpath,
-cv.holderkernpath,
 
 ## kernel functions
 "rbfdot",
@@ -32,7 +28,6 @@ cv.holderkernpath,
 S3method("plot","kerneltool")
 S3method("plot","cv.kerneltool")
 S3method("predict","kerneltool")
-
 
 exportClasses("kernel", "rbfkernel", "laplacekernel",
               "besselkernel", "tanhkernel", "polykernel","fourierkernel",

@@ -15,7 +15,7 @@ cv.expkernpath <- function(outlist, lambda, x, y, kern, foldid,
     for (i in seq(nfolds)) {
         which <- foldid == i
         fitobj <- outlist[[i]]
-        preds <- predict(fitobj, kern, x[!which, ,drop = FALSE], x[which, , drop = FALSE], type = "link")
+        preds <- predict(fitobj, kern, x[!which, ,drop = FALSE], x[which, , drop = FALSE])
         nlami <- length(outlist[[i]]$lambda)
         predmat[which, seq(nlami)] <- preds
         nlams[i] <- nlami

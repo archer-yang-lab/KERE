@@ -1,23 +1,28 @@
-kerneltool <- function(x, y, kern, method = c("exp", "holder"), 					     
-	lambda = NULL, eps = 1e-08, maxit = 1e+06, qval = 2, 
+kerneltool <- function(x, y, kern, 					     
+	lambda = NULL, eps = 1e-08, maxit = 1e+04, 
 	omega = 0.5, gamma = 1e-06) {
-    #################################################################################
+#################################################################################
     #data setup
-    method <- match.arg(method)
     this.call <- match.call()
     y <- drop(y)
+    y <- as.double(y)
     x <- as.matrix(x)
-	  Kmat <- kernelMatrix(kern,x)
+	Kmat <- kernelMatrix(kern,x)
     diag(Kmat) <- diag(Kmat) + gamma 
     np <- dim(x)
     nobs <- as.integer(np[1])
     if (length(y) != nobs) 
         stop("x and y have different number of observations")
-    #################################################################################
     #parameter setup
+    if (omega <= 0 || omega >= 1) 
+        stop("omega must be in (0,1)")
+	omega <- as.double(omega)
+    eigen_result <- eigen(Kmat, symmetric = TRUE)
+	Umat <- eigen_result$vectors
+	Dvec <- eigen_result$values
+	Ksum <- colSums(Kmat)
     maxit <- as.integer(maxit)
     eps <- as.double(eps)
-    #################################################################################
     #lambda setup
     if (is.null(lambda)) {
         stop("user must provide a lambda sequence")
@@ -25,23 +30,23 @@ kerneltool <- function(x, y, kern, method = c("exp", "holder"),
         ulam <- as.double(rev(sort(lambda)))
         nlam <- as.integer(length(lambda))
     }
-    #################################################################################
-    fit <- switch(method, 
-	# expdirect = expdirect(x, y, Kmat, nlam, ulam, eps, maxit, omega, 
-	#         nobs),
-	# expfast = expfast(x, y, Kmat, nlam, ulam, eps, maxit, omega, 
-	#         nobs),
-    # exp = expkernpath(x, y, Kmat, nlam, ulam, eps, maxit, omega, 
-    #                   nobs),
-    exp = expkernpath(x, y, Kmat, nlam, ulam, eps, maxit, omega, 
-                      nobs),
-    holder = holderkernpath(x, y, Kmat, nlam, ulam, eps, maxit, qval, 
-                            nobs) 
-    #holderexp = holderexppath(x, y, Kmat, nlam, ulam, eps, maxit, qval, 
-    #                 nobs)
-    )
-    fit$call <- this.call
-    #################################################################################
-    class(fit) <- c("kerneltool", class(fit))
-    fit
+ ################################################################################
+	#call Fortran core
+	fit <- .Fortran("expkern", omega, 
+			as.double(Kmat), as.double(Umat),
+			as.double(Dvec), as.double(Ksum), 
+			nobs, as.double(y), nlam, ulam, eps, maxit, anlam = integer(1), 
+			npass = integer(nlam), jerr = integer(1), 
+			alpmat = double((nobs+1) * nlam),
+			PACKAGE = "kerneltool")
+ ################################################################################
+    # output
+	errmsg <- err(fit$jerr, maxit)
+    if(paste(errmsg$n)=='-1') print(errmsg$msg, call. = FALSE)
+	anlam <- fit$anlam
+    alpha <- matrix(fit$alpmat[seq((nobs+1) * anlam)], nobs+1, anlam) 
+    outlist <- list(alpha = alpha, lambda = ulam[seq(anlam)], npass = fit$npass[seq(anlam)], jerr = fit$jerr)			
+    outlist$call <- this.call
+    class(outlist) <- "kerneltool"
+    outlist
 } 

@@ -1,2 +1,5 @@
-predict.kerneltool <- function(object, kern, x, newx, 
-type = c("class", "link"), ...) NextMethod("predict") 
+predict.kerneltool <- function(object, kern, x, newx){
+	nfit <- kernelMult(kern, newx, x, object$alpha[-1, ])
+    nfit <- sweep(nfit, MARGIN = 2, object$alpha[1, ], "+")
+	nfit
+}

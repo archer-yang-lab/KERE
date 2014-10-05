@@ -1,5 +1,5 @@
 cv.kerneltool <- function(x, y, kern, lambda = NULL, 
-	pred.loss = c("loss", "misclass"), nfolds = 5, foldid, qval = 2.0, omega = 0.5, ...) {
+	pred.loss = c("loss", "misclass"), nfolds = 5, foldid, omega = 0.5, ...) {
     if (missing(pred.loss)) 
         pred.loss <- "default" else pred.loss <- match.arg(pred.loss)
     ###Fit the model once to get dimensions etc of output
@@ -17,15 +17,14 @@ cv.kerneltool <- function(x, y, kern, lambda = NULL,
         which <- foldid == i
         y_sub <- y[!which]
         outlist[[i]] <- kerneltool(x = x[!which, , drop = FALSE], 
-            y = y_sub, kern = kern, lambda = lambda, 
-			qval = qval, omega = omega, ...)
+            y = y_sub, kern = kern, lambda = lambda, omega = omega, ...)
 		#cat("fold ", i, " completed.\n")
     }
     ###What to do depends on the pred.loss and the model fit
     fun <- paste("cv", class(outlist[[1]])[[2]], sep = ".")
     lambda <- outlist[[1]]$lambda
     cvstuff <- do.call(fun, list(outlist, lambda, x, y, kern, foldid, 
-        pred.loss, qval, omega))
+        pred.loss, omega))
     cvm <- cvstuff$cvm
     cvsd <- cvstuff$cvsd
     cvname <- cvstuff$name
