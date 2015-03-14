@@ -1,6 +1,7 @@
 kerneltool <- function(x, y, kern, 					     
 	lambda = NULL, eps = 1e-08, maxit = 1e+04, 
-	omega = 0.5, gamma = 1e-06) {
+	omega = 0.5, gamma = 1e-06, 
+	option = c("fast","precision")) {
 #################################################################################
     #data setup
     this.call <- match.call()
@@ -32,7 +33,14 @@ kerneltool <- function(x, y, kern,
     }
  ################################################################################
 	#call Fortran core
-	fit <- .Fortran("expkern", omega, 
+	if(option=="fast") fit <- .Fortran("expkern_fast", omega, 
+			as.double(Kmat), as.double(Umat),
+			as.double(Dvec), as.double(Ksum), 
+			nobs, as.double(y), nlam, ulam, eps, maxit, anlam = integer(1), 
+			npass = integer(nlam), jerr = integer(1), 
+			alpmat = double((nobs+1) * nlam),
+			PACKAGE = "kerneltool")
+	if(option=="precision") fit <- .Fortran("expkern_precision", omega, 
 			as.double(Kmat), as.double(Umat),
 			as.double(Dvec), as.double(Ksum), 
 			nobs, as.double(y), nlam, ulam, eps, maxit, anlam = integer(1), 

@@ -1,5 +1,5 @@
 ! --------------------------------------------------
-SUBROUTINE expkern (omega, Kmat, Umat, Dvec, Ksum, &
+SUBROUTINE expkern_fast (omega, Kmat, Umat, Dvec, Ksum, &
 	& nobs, y, nlam, ulam, eps, &
     & maxit, anlam, npass, jerr, alpmat)
 ! --------------------------------------------------
@@ -50,7 +50,7 @@ SUBROUTINE expkern (omega, Kmat, Umat, Dvec, Ksum, &
 	r = y
 	alpmat = 0.0D0
 	alpvec = 0.0D0
-	DO l = 1,nlam
+	lambda_loop: DO l = 1,nlam
 		dif = 0.0D0
 	! - - - computing Ku inverse - - - 
 	    Ddiag = 1.0D0/(Dvec*Dvec + 2.0D0*ulam(l)*Dvec/mbd)
@@ -64,7 +64,7 @@ SUBROUTINE expkern (omega, Kmat, Umat, Dvec, Ksum, &
 		DO j = 1, nobs
 		    Ginv = Ginv + BAmat(j, j)
 	    ENDDO
-		Ginv = 1 / Ginv
+		Ginv = 1.0D0 / Ginv
 		Qinv = Ainv - Ginv * MATMUL(Ainv, BAmat)
 		QKsum = MATMUL(Qinv, Ksum) / REAL(nobs)
 		KUinv = 0.0D0
@@ -73,7 +73,7 @@ SUBROUTINE expkern (omega, Kmat, Umat, Dvec, Ksum, &
 		KUinv(2:(nobs+1), 1)  = -QKsum
 		KUinv(2:(nobs+1), 2:(nobs+1))  = Qinv
 		! update alpha
-		DO
+		alpha_loop: DO
 			DO j = 1, nobs
                 IF (r(j) <= 0.0D0) THEN
                     phi (j) = 2.0D0 * (1.0D0 - omega) * r(j)
@@ -89,13 +89,13 @@ SUBROUTINE expkern (omega, Kmat, Umat, Dvec, Ksum, &
 		    IF (DOT_PRODUCT(dif,dif)/DOT_PRODUCT(oalpvec,oalpvec) < eps) EXIT
 		    npass(l) = npass(l) + 1
 		    IF (SUM(npass) > maxit) EXIT
-		ENDDO
+		ENDDO alpha_loop
 		alpmat(:, l) = alpvec
 		IF (SUM(npass) > maxit) THEN
 			jerr = -l
 			EXIT
 		ENDIF
 		anlam = l
-	ENDDO
+	ENDDO lambda_loop
 
-END SUBROUTINE expkern
+END SUBROUTINE expkern_fast
