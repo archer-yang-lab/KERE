@@ -6,7 +6,7 @@ err <- function(n, maxit) {
             maxit, " iterations; solutions for larger lambdas returned", 
             sep = "")
         n <- -1
-        msg <- paste("From kerneltool fortran code -", msg)
+        msg <- paste("From KER fortran code -", msg)
     }
     list(n = n, msg = msg)
 }

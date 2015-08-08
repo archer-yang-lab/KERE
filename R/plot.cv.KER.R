@@ -1,4 +1,4 @@
-plot.cv.kerneltool <- function(x, sign.lambda = 1, ...) {
+plot.cv.KER <- function(x, sign.lambda = 1, ...) {
     cvobj <- x
     xlab <- "log(Lambda)"
     if (sign.lambda < 0) 

@@ -1,4 +1,4 @@
-plot.kerneltool <- function(x, 
+plot.KER <- function(x, 
     color = FALSE, label = FALSE, ...) {
     alpha <- x$alpha[-1,]
     lambda <- x$lambda

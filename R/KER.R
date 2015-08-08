@@ -1,4 +1,4 @@
-kerneltool <- function(x, y, kern, 					     
+KER <- function(x, y, kern, 					     
 	lambda = NULL, eps = 1e-08, maxit = 1e+04, 
 	omega = 0.5, gamma = 1e-06, 
 	option = c("fast","precision")) {
@@ -39,14 +39,14 @@ kerneltool <- function(x, y, kern,
 			nobs, as.double(y), nlam, ulam, eps, maxit, anlam = integer(1), 
 			npass = integer(nlam), jerr = integer(1), 
 			alpmat = double((nobs+1) * nlam),
-			PACKAGE = "kerneltool")
+			PACKAGE = "KER")
 	if(option=="precision") fit <- .Fortran("expkern_precision", omega, 
 			as.double(Kmat), as.double(Umat),
 			as.double(Dvec), as.double(Ksum), 
 			nobs, as.double(y), nlam, ulam, eps, maxit, anlam = integer(1), 
 			npass = integer(nlam), jerr = integer(1), 
 			alpmat = double((nobs+1) * nlam),
-			PACKAGE = "kerneltool")
+			PACKAGE = "KER")
  ################################################################################
     # output
 	errmsg <- err(fit$jerr, maxit)
@@ -55,6 +55,6 @@ kerneltool <- function(x, y, kern,
     alpha <- matrix(fit$alpmat[seq((nobs+1) * anlam)], nobs+1, anlam) 
     outlist <- list(alpha = alpha, lambda = ulam[seq(anlam)], npass = fit$npass[seq(anlam)], jerr = fit$jerr)			
     outlist$call <- this.call
-    class(outlist) <- "kerneltool"
+    class(outlist) <- "KER"
     outlist
 } 

@@ -1,10 +1,10 @@
-cv2d.kerneltool <- function(x, y, kname = "rbfdot", lambda = NULL, sigma = NULL, ...) {
+cv2d.KER <- function(x, y, kname = "rbfdot", lambda = NULL, sigma = NULL, ...) {
 		if (is.null(sigma)) {
 	        stop("user must provide a sigma sequence")}
 		mm.cvm <- Inf
 		for(i in seq.int(length(sigma))){
 			kern <- do.call(kname, list(sigma[i]))
-			cv_out <- cv.kerneltool(x, y, kern, lambda = lambda, ...)
+			cv_out <- cv.KER(x, y, kern, lambda = lambda, ...)
 			if(mm.cvm > cv_out$cvm.min){
 				mm.cvm <- cv_out$cvm.min
 				mm.lambda <- cv_out$lambda.min

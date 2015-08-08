@@ -1,11 +1,11 @@
-useDynLib("kerneltool")
+useDynLib("KER")
 
 import("methods")
 
-export(kerneltool,
-predict.kerneltool,
-cv.kerneltool,
-cv2d.kerneltool,
+export(KER,
+predict.KER,
+cv.KER,
+cv2d.KER,
 
 ## kernel functions
 "rbfdot",
@@ -25,9 +25,9 @@ cv2d.kerneltool,
 "kpar"
 )
 
-S3method("plot","kerneltool")
-S3method("plot","cv.kerneltool")
-S3method("predict","kerneltool")
+S3method("plot","KER")
+S3method("plot","cv.KER")
+S3method("predict","KER")
 
 exportClasses("kernel", "rbfkernel", "laplacekernel",
               "besselkernel", "tanhkernel", "polykernel","fourierkernel",
