@@ -5,6 +5,7 @@ KERE <- function(x, y, kern,
 #################################################################################
     #data setup
     this.call <- match.call()
+    option <- match.arg(option)
     y <- drop(y)
     y <- as.double(y)
     x <- as.matrix(x)
