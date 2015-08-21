@@ -1,4 +1,4 @@
-cv.KER <- function(x, y, kern, lambda = NULL, 
+cv.KERE <- function(x, y, kern, lambda = NULL, 
 	nfolds = 5, foldid, omega = 0.5, ...) {
     ###Fit the model once to get dimensions etc of output
     y <- drop(y)
@@ -16,7 +16,7 @@ cv.KER <- function(x, y, kern, lambda = NULL,
     for (i in seq(nfolds)) {
         which <- foldid == i
         y_sub <- y[!which]
-        fit <- KER(x = x[!which, , drop = FALSE], 
+        fit <- KERE(x = x[!which, , drop = FALSE], 
             y = y_sub, kern = kern, lambda = lambda, omega = omega, ...)
         preds <- predict(fit, kern, x[!which, ,drop = FALSE], x[which, , drop = FALSE])
         nlami <- length(fit$lambda)
@@ -37,6 +37,6 @@ cv.KER <- function(x, y, kern, lambda = NULL,
 	obj <- list(lambda = lambda, cvm = cvm, cvsd = cvsd, cvupper = cvm + 
 	    cvsd, cvlo = cvm - cvsd, name = "Expectile Loss", cvm.min = cvm.min, 
 		lambda.min = lambda.min)
-	class(obj) <- "cv.KER"
+	class(obj) <- "cv.KERE"
 	obj
 } 

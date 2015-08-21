@@ -1,4 +1,4 @@
-plot.KER <- function(x, 
+plot.KERE <- function(x, 
     color = FALSE, label = FALSE, ...) {
     alpha <- x$alpha[-1,]
     lambda <- x$lambda

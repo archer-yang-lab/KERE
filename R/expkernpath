@@ -19,7 +19,7 @@ expkernpath <- function(x, y, Kmat, nlam, ulam,
 			nobs, as.double(y), nlam, ulam, eps, maxit, anlam = integer(1), 
 			npass = integer(nlam), jerr = integer(1), 
 			alpmat = double((nobs+1) * nlam),
-			PACKAGE = "KER")
+			PACKAGE = "KERE")
     ################################################################################
     # output
     errmsg <- err(fit$jerr, maxit)

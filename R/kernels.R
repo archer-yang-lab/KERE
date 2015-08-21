@@ -233,13 +233,13 @@ stringdot <- function(length = 4, lambda = 1.1, type = "spectrum", normalized = 
                 if(!is(y,"vector")&&!is.null(y)) stop("y must be a vector")
                 
                 if (is(x,"vector") && is.null(y) && normalized == FALSE)
-                  return(.Call("subsequencek",as.character(x), as.character(x), as.integer(nchar(x)), as.integer(nchar(x)), as.integer(length), as.double(lambda),PACKAGE = "KER"))
+                  return(.Call("subsequencek",as.character(x), as.character(x), as.integer(nchar(x)), as.integer(nchar(x)), as.integer(length), as.double(lambda),PACKAGE = "KERE"))
                 if (is(x,"vector") && is(y,"vector") && normalized == FALSE)
-                  return(.Call("subsequencek",as.character(x), as.character(y), as.integer(nchar(x)), as.integer(nchar(y)), as.integer(length), as.double(lambda),PACKAGE = "KER"))
+                  return(.Call("subsequencek",as.character(x), as.character(y), as.integer(nchar(x)), as.integer(nchar(y)), as.integer(length), as.double(lambda),PACKAGE = "KERE"))
                 if (is(x,"vector") && is.null(y) && normalized == TRUE)
                   return(1)
                 if (is(x,"vector") && is(y,"vector") && normalized == TRUE)
-                  return(.Call("subsequencek",as.character(x), as.character(y), as.integer(nchar(x)), as.integer(nchar(y)), as.integer(length), as.double(lambda),PACKAGE = "KER")/sqrt(.Call("subsequencek",as.character(x), as.character(x), as.integer(nchar(x)), as.integer(nchar(x)), as.integer(length), as.double(lambda),PACKAGE = "KER")*.Call("subsequencek",as.character(y), as.character(y), as.integer(nchar(y)), as.integer(nchar(y)), as.integer(length), as.double(lambda),PACKAGE = "KER")))
+                  return(.Call("subsequencek",as.character(x), as.character(y), as.integer(nchar(x)), as.integer(nchar(y)), as.integer(length), as.double(lambda),PACKAGE = "KERE")/sqrt(.Call("subsequencek",as.character(x), as.character(x), as.integer(nchar(x)), as.integer(nchar(x)), as.integer(length), as.double(lambda),PACKAGE = "KERE")*.Call("subsequencek",as.character(y), as.character(y), as.integer(nchar(y)), as.integer(nchar(y)), as.integer(length), as.double(lambda),PACKAGE = "KERE")))
               }
           },
           
@@ -343,14 +343,14 @@ stringdot <- function(length = 4, lambda = 1.1, type = "spectrum", normalized = 
                 if(!is(y,"vector")&&!is.null(y)) stop("y must be a vector")
                 
                 if (is(x,"vector") && is.null(y) && normalized == FALSE)
-                  return(.Call("substringk",as.character(x), as.character(x), as.integer(nchar(x)), as.integer(nchar(x)), as.integer(length), as.double(lambda),PACKAGE = "KER"))
+                  return(.Call("substringk",as.character(x), as.character(x), as.integer(nchar(x)), as.integer(nchar(x)), as.integer(length), as.double(lambda),PACKAGE = "KERE"))
                 
                 if (is(x,"vector") && is(y,"vector") && normalized == FALSE)
-                  return(.Call("substringk",as.character(x), as.character(y), as.integer(nchar(x)), as.integer(nchar(y)), as.integer(length), as.double(lambda),PACKAGE = "KER"))
+                  return(.Call("substringk",as.character(x), as.character(y), as.integer(nchar(x)), as.integer(nchar(y)), as.integer(length), as.double(lambda),PACKAGE = "KERE"))
                 if (is(x,"vector") && is.null(y) && normalized == TRUE)
                   return(1)
                 if (is(x,"vector") && is(y,"vector") && normalized == TRUE)
-                  return(.Call("substringk",as.character(x), as.character(y), as.integer(nchar(x)), as.integer(nchar(y)), as.integer(length), as.double(lambda),PACKAGE = "KER")/sqrt(.Call("substringk",as.character(x), as.character(x), as.integer(nchar(x)), as.integer(nchar(x)), as.integer(length), as.double(lambda),PACKAGE = "KER")*.Call("substringk",as.character(y), as.character(y), as.integer(nchar(y)), as.integer(nchar(y)), as.integer(length), as.double(lambda),PACKAGE = "KER")))
+                  return(.Call("substringk",as.character(x), as.character(y), as.integer(nchar(x)), as.integer(nchar(y)), as.integer(length), as.double(lambda),PACKAGE = "KERE")/sqrt(.Call("substringk",as.character(x), as.character(x), as.integer(nchar(x)), as.integer(nchar(x)), as.integer(length), as.double(lambda),PACKAGE = "KERE")*.Call("substringk",as.character(y), as.character(y), as.integer(nchar(y)), as.integer(nchar(y)), as.integer(length), as.double(lambda),PACKAGE = "KERE")))
               }
           },
           
@@ -362,14 +362,14 @@ stringdot <- function(length = 4, lambda = 1.1, type = "spectrum", normalized = 
                 if(!is(y,"vector")&&!is.null(y)) stop("y must be a vector")
                 
                 if (is(x,"vector") && is.null(y) && normalized == FALSE)
-                  return(.Call("fullsubstringk",as.character(x), as.character(x), as.integer(nchar(x)), as.integer(nchar(x)), as.integer(length), as.double(lambda),PACKAGE = "KER"))
+                  return(.Call("fullsubstringk",as.character(x), as.character(x), as.integer(nchar(x)), as.integer(nchar(x)), as.integer(length), as.double(lambda),PACKAGE = "KERE"))
                 
                 if (is(x,"vector") && is(y,"vector") && normalized == FALSE)
-                  return(.Call("fullsubstringk",as.character(x), as.character(y), as.integer(nchar(x)), as.integer(nchar(y)), as.integer(length), as.double(lambda),PACKAGE = "KER"))
+                  return(.Call("fullsubstringk",as.character(x), as.character(y), as.integer(nchar(x)), as.integer(nchar(y)), as.integer(length), as.double(lambda),PACKAGE = "KERE"))
                 if (is(x,"vector") && is.null(y) && normalized == TRUE)
                   return(1)
                 if (is(x,"vector") && is(y,"vector") && normalized == TRUE)
-                  return(.Call("fullsubstringk",as.character(x), as.character(y), as.integer(nchar(x)), as.integer(nchar(y)), as.integer(length), as.double(lambda),PACKAGE = "KER")/sqrt(.Call("fullsubstringk",as.character(x), as.character(x), as.integer(nchar(x)), as.integer(nchar(x)), as.integer(length), as.double(lambda),PACKAGE = "KER")*.Call("fullsubstringk",as.character(y), as.character(y), as.integer(nchar(y)), as.integer(nchar(y)), as.integer(length), as.double(lambda),PACKAGE = "KER")))
+                  return(.Call("fullsubstringk",as.character(x), as.character(y), as.integer(nchar(x)), as.integer(nchar(y)), as.integer(length), as.double(lambda),PACKAGE = "KERE")/sqrt(.Call("fullsubstringk",as.character(x), as.character(x), as.integer(nchar(x)), as.integer(nchar(x)), as.integer(length), as.double(lambda),PACKAGE = "KERE")*.Call("fullsubstringk",as.character(y), as.character(y), as.integer(nchar(y)), as.integer(nchar(y)), as.integer(length), as.double(lambda),PACKAGE = "KERE")))
               }
           })
   
