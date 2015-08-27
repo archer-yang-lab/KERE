@@ -23,6 +23,10 @@ predict.KERE,
 "kpar"
 )
 
+importFrom("grDevices", "gray.colors")
+  importFrom("graphics", "matplot", "segments")
+  importFrom("stats", "na.omit")
+
 S3method("plot","KERE")
 S3method("predict","KERE")
 
