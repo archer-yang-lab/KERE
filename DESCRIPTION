@@ -1,12 +1,12 @@
 Package: KERE
-Title:  LASSO and elastic net (adaptive) penalized least squares, logistic regression, HHSVM, squared hinge SVM and expectile regression using a fast GCD algorithm.
-Version: 1.0.5
-Date: 2012-2-21
-Author: Yi Yang <yiyang@umn.edu>, Yuwen Gu <guxxx192@umn.edu>, Hui Zou <hzou@stat.umn.edu>
+Title:  Expectile Regression in Reproducing Kernel Hilbert Space 
+Version: 1.0.0
+Date: 2015-8-26
+Author: Yi Yang, Teng Zhang, Hui Zou
 Maintainer: Yi Yang <yiyang@umn.edu>
-Description: This package implements a generalized coordinate descent (GCD) algorithm for computing the solution path of the hybrid Huberized support vector machine (HHSVM) and its generalization, including the LASSO and elastic net (adaptive) penalized least squares, logistic regression, HHSVM, squared hinge loss SVM and expectile regression.
+Depends: methods
+Description: An efficient algorithm inspired by majorization-minimization principle for solving the entire solution path of a flexible nonparametric expectile regression estimator constructed in a reproducing kernel Hilbert space.
 License: GPL-2
-URL: http://code.google.com/p/KERE/
-Packaged: 2012-02-21 06:53:12 UTC; yiyang
+Packaged: 2015-08-26 18:53:12 UTC; yiyang
 Repository: CRAN
-Date/Publication: 2011-10-14 08:00:50
+Date/Publication: 2015-08-26 20:00:50

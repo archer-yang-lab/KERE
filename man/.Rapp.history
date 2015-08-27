@@ -1,0 +1,2 @@
+setwd('/Users/emeryyi/Dropbox/Research/googleproject/KERE/man')
+y <- matrix(rnorm(10*1),10,1)
