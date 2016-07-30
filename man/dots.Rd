@@ -64,8 +64,7 @@ splinedot()
   The kernel generating functions are used to initialize a kernel
   function
   which calculates the dot (inner) product between two feature vectors in a
-  Hilbert Space. These functions can be passed as a \code{kernel} argument on almost all
-  functions in \pkg{KERE}(e.g., \code{ksvm}, \code{kpca}  etc).
+  Hilbert Space. These functions can be passed as a \code{kernel} argument in \pkg{KERE}.
   
   Although using one of the existing kernel functions as a
   \code{kernel} argument in various functions in \pkg{KERE} has the

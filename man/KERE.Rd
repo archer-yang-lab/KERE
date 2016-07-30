@@ -51,7 +51,7 @@ maximum number of loop iterations allowed at fixed lambda value. Default is 1e4.
 }
 \details{
 Note that the objective function in \code{KERE} is
-\deqn{Loss(y- \alpha_0 - K * \alpha )) + \lambda * \alpha^T * K * \alpha,}
+\deqn{Loss(y- \alpha_0 - K * \alpha ) + \lambda * \alpha^T * K * \alpha,}
 where the \eqn{\alpha_0} is the intercept, \eqn{\alpha} is the solution vector, and \eqn{K} is the kernel matrix with \eqn{K_{ij}=K(x_i,x_j)}. Users can specify the kernel function to use, options include Radial Basis kernel, Polynomial kernel, Linear kernel, Hyperbolic tangent kernel, Laplacian kernel, Bessel kernel, ANOVA RBF kernel, the Spline kernel. Users can also tweak the penalty by choosing different \eqn{lambda}. 
 
 For computing speed reason, if models are not converging or running slow, consider increasing \code{eps} before increasing \code{maxit}.

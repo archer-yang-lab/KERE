@@ -4,6 +4,7 @@ import("methods")
 
 export(KERE,
 cv.KERE,
+cv2d.KERE,
 predict.KERE,
 
 ## kernel functions
@@ -22,7 +23,7 @@ predict.KERE,
 "as.kernelMatrix",
 "kpar"
 )
-I want to make a change
+
 importFrom("grDevices", "gray.colors")
   importFrom("graphics", "matplot", "segments")
   importFrom("stats", "na.omit")
