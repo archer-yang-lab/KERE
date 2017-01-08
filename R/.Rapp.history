@@ -1,7 +1,204 @@
-nobs=1
-nobs=10
-vnames <- paste("a", seq(nobs+1)-1, sep = "")
-stepnames <- paste("L", seq(anlam), sep = "")
-?matrix
-setwd('/Users/emeryyi/Dropbox/Research/googleproject/KERE/R')
-vnames <- colnames(x)
+nobs
+nobs=100
+nsub=10
+setwd('/Users/yiyang/Dropbox/Research/prog_project/KERE/R')
+foldid <- sample(rep(seq(nsub), length = nobs))
+foldid
+setwd('/Users/yiyang/Dropbox/Research/prog_project/KERE/R')
+subid <- sample(rep(seq(nsub), length = nobs))
+setwd('/Users/yiyang/Dropbox/Research/14_KERE/code/test')
+source("source.R") # R code for generating the FHT data#
+library(KERE)#
+nobs = 500#
+p = 20#
+rho = 0.9#
+#
+omega = 0.3#
+x=genx2(nobs,p,rho)#
+y=genjerry(x,3)#
+## initialize kernel function#
+rbf <- rbfdot(sigma = 1)#
+#
+## calculate kernel matrix#
+Kmat <- kernelMatrix(rbf,x) + diag(1e-06,nobs,nobs)#
+eigen_result <- eigen(Kmat, symmetric = TRUE)#
+ulam  <- seq(0.4,10,0.1)
+setwd('/Users/yiyang/Dropbox/Research/prog_project/KERE/R')
+subid <- sample(rep(seq(nsub), length = nobs))
+i=1
+setwd('/Users/yiyang/Dropbox/Research/prog_project/KERE/R')
+subid
+setwd('/Users/yiyang/Dropbox/Research/prog_project/KERE/R')
+y_sub <- y[which]
+setwd('/Users/yiyang/Dropbox/Research/prog_project/KERE/R')
+which <- subid == i
+setwd('/Users/yiyang/Dropbox/Research/prog_project/KERE/R')
+which
+setwd('/Users/yiyang/Dropbox/Research/prog_project/KERE/R')
+y_sub <- y[which]
+kern=rbf
+setwd('/Users/yiyang/Dropbox/Research/prog_project/KERE/R')
+fit <- KERE(#
+      x = x[which, , drop = FALSE],#
+      y = y_sub, kern = kern, lambda = lambda, omega = omega, ...#
+    )
+fit <- KERE(#
+      x = x[which, , drop = FALSE],#
+      y = y_sub, kern = kern, lambda = lambda, omega = omega#
+    )
+setwd('/Users/yiyang/Dropbox/Research/14_KERE/code/test')
+ulam  <- seq(0.4,10,0.1)
+lambda=ulam
+setwd('/Users/yiyang/Dropbox/Research/prog_project/KERE/R')
+fit <- KERE(#
+      x = x[which, , drop = FALSE],#
+      y = y_sub, kern = kern, lambda = lambda, omega = omega, ...#
+    )
+fit <- KERE(#
+      x = x[which, , drop = FALSE],#
+      y = y_sub, kern = kern, lambda = lambda, omega = omega, #
+    )
+fit
+setwd('/Users/yiyang/Dropbox/Research/prog_project/KERE/R')
+which <- subid == i#
+    y_sub <- y[which]#
+    fit <- KERE(#
+      x = x[which, , drop = FALSE],#
+      y = y_sub, kern = kern, lambda = lambda, omega = omega, ...#
+    )
+which <- subid == i#
+    y_sub <- y[which]#
+    fit <- KERE(#
+      x = x[which, , drop = FALSE],#
+      y = y_sub, kern = kern, lambda = lambda, omega = omega#
+    )
+fi
+fit
+setwd('/Users/yiyang/Dropbox/Research/prog_project/KERE/R')
+nobs
+nobsrep(seq(nsub)
+rep(seq(nsub)
+rep(seq(nsub)
+)
+rep(seq(nsub), length = nobs)
+nobs/nsub
+(nobs/nsub)
+mod
+nobs
+nobs%2
+nobs%3
+setwd('/Users/yiyang/Dropbox/Research/prog_project/KERE/R')
+subid <- sample(rep(seq(nsub), length = (nobs-nobs%%nsub))
+)
+setwd('/Users/yiyang/Dropbox/Research/prog_project/KERE/R')
+subid <- sample(rep(seq(nsub), length = (nobs-nobs%%nsub)))
+setwd('/Users/yiyang/Dropbox/Research/prog_project/KERE/R')
+subid
+nobs = 20
+nobs = 22
+setwd('/Users/yiyang/Dropbox/Research/prog_project/KERE/R')
+subid <- sample(rep(seq(nsub), length = (nobs-nobs%%nsub)))
+setwd('/Users/yiyang/Dropbox/Research/prog_project/KERE/R')
+subid
+length(subid)
+i=1
+setwd('/Users/yiyang/Dropbox/Research/prog_project/KERE/R')
+which <- subid == i
+setwd('/Users/yiyang/Dropbox/Research/prog_project/KERE/R')
+y_sub <- y[which]
+setwd('/Users/yiyang/Dropbox/Research/prog_project/KERE/R')
+y_sub
+setwd('/Users/yiyang/Dropbox/Research/prog_project/KERE/R')
+nobs <- NROW(x)
+setwd('/Users/yiyang/Dropbox/Research/prog_project/KERE/R')
+fitmat <- array(NA, c(length(y), length(lambda), )
+setwd('/Users/yiyang/Dropbox/Research/prog_project/KERE/R')
+subid <- sample(rep(seq(nsub), length = (nobs-nobs%%nsub)))
+setwd('/Users/yiyang/Dropbox/Research/prog_project/KERE/R')
+(nobs-nobs%%nsub)
+setwd('/Users/yiyang/Dropbox/Research/prog_project/KERE/R')
+effective_size <- nobs-nobs%%nsub
+setwd('/Users/yiyang/Dropbox/Research/prog_project/KERE/R')
+subid <- sample(rep(seq(nsub), length = effective_size))
+setwd('/Users/yiyang/Dropbox/Research/prog_project/KERE/R')
+subid
+setwd('/Users/yiyang/Dropbox/Research/prog_project/KERE/R')
+sub_size
+setwd('/Users/yiyang/Dropbox/Research/prog_project/KERE/R')
+effective_size/nsub
+setwd('/Users/yiyang/Dropbox/Research/prog_project/KERE/R')
+sub_size <- effective_size/nsub
+setwd('/Users/yiyang/Dropbox/Research/prog_project/KERE/R')
+sub_size
+setwd('/Users/yiyang/Dropbox/Research/prog_project/KERE/R')
+nsub
+setwd('/Users/yiyang/Dropbox/Research/prog_project/KERE/R')
+fitmat <- array(NA, c(length(sub_size), length(lambda), nsub)
+setwd('/Users/yiyang/Dropbox/Research/prog_project/KERE/R')
+fitmat <- array(NA, c(length(sub_size), length(lambda), nsub))
+setwd('/Users/yiyang/Dropbox/Research/prog_project/KERE/R')
+fitmat <- array(NA, c(length(sub_size), length(lambda), nsub))
+setwd('/Users/yiyang/Dropbox/Research/prog_project/KERE/R')
+fitmat
+setwd('/Users/yiyang/Dropbox/Research/prog_project/KERE/R')
+length(lambda)
+setwd('/Users/yiyang/Dropbox/Research/prog_project/KERE/R')
+length(sub_size)
+setwd('/Users/yiyang/Dropbox/Research/prog_project/KERE/R')
+sub_size
+setwd('/Users/yiyang/Dropbox/Research/prog_project/KERE/R')
+fitmat <- array(NA, c(sub_size, length(lambda), nsub))
+setwd('/Users/yiyang/Dropbox/Research/prog_project/KERE/R')
+fitmat
+setwd('/Users/yiyang/Dropbox/Research/prog_project/KERE/R')
+for (i in seq(nsub)) {#
+    which <- subid == i#
+    y_sub <- y[which]#
+    fit <- KERE(#
+      x = x[which, , drop = FALSE],#
+      y = y_sub, kern = kern, lambda = lambda, omega = omega, ...#
+    )#
+	fitmat[,,i] <- fit$alpha#
+  }
+for (i in seq(nsub)) {#
+    which <- subid == i#
+    y_sub <- y[which]#
+    fit <- KERE(#
+      x = x[which, , drop = FALSE],#
+      y = y_sub, kern = kern, lambda = lambda, omega = omega#
+    )#
+	fitmat[,,i] <- fit$alpha#
+  }
+setwd('/Users/yiyang/Dropbox/Research/prog_project/KERE/R')
+which <- subid == i#
+    y_sub <- y[which]#
+    fit <- KERE(#
+      x = x[which, , drop = FALSE],#
+      y = y_sub, kern = kern, lambda = lambda, omega = omega, ...#
+    )
+which <- subid == i#
+    y_sub <- y[which]#
+    fit <- KERE(#
+      x = x[which, , drop = FALSE],#
+      y = y_sub, kern = kern, lambda = lambda, omega = omega#
+    )
+fit
+setwd('/Users/yiyang/Dropbox/Research/prog_project/KERE/R')
+fit$alpha
+setwd('/Users/yiyang/Dropbox/Research/prog_project/KERE/R')
+fitmat <- array(NA, c(sub_size+1, length(lambda), nsub))
+setwd('/Users/yiyang/Dropbox/Research/prog_project/KERE/R')
+fitmat[,,i] <- fit$alpha
+for (i in seq(nsub)) {#
+    which <- subid == i#
+    y_sub <- y[which]#
+    fit <- KERE(#
+      x = x[which, , drop = FALSE],#
+      y = y_sub, kern = kern, lambda = lambda, omega = omega    )#
+	fitmat[,,i] <- fit$alpha#
+  }
+fitmat
+setwd('/Users/yiyang/Dropbox/Research/prog_project/KERE/R')
+apply(fitmat,3,mean)
+setwd('/Users/yiyang/Dropbox/Research/prog_project/KERE/R')
+apply(fitmat,c(1,2),mean)
