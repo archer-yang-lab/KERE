@@ -20,11 +20,11 @@ A coefficient profile plot is produced. The x-axis is \eqn{log(\lambda)}. The y-
 
 \author{
 Yi Yang, Teng Zhang and Hui Zou\cr
-Maintainer: Yi Yang  <yiyang@umn.edu>
+Maintainer: Yi Yang  <yi.yang6@mcgill.ca>
 }
 
 \references{
-Y. Yang, T. Zhang, and H. Zou. "Flexible Expectile Regression in Reproducing Kernel Hilbert Space." ArXiv e-prints: stat.ME/1508.05987, August 2015.
+Y. Yang, T. Zhang, and H. Zou. (2017) "Flexible Expectile Regression in Reproducing Kernel Hilbert Space." Technometrics. Accepted.
 }
 
 

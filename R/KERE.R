@@ -1,7 +1,7 @@
 KERE <- function(x, y, kern,
                  lambda = NULL, eps = 1e-08, maxit = 1e+04,
-                 omega = 0.5, gamma = 1e-04,
-                 option = c("light","fast","normal")) {
+                 omega = 0.5, gamma = 1e-06,
+                 option = c("fast","normal")) {
   #####################################
   #data setup
   this.call <- match.call()
@@ -22,6 +22,10 @@ KERE <- function(x, y, kern,
   eigen_result <- eigen(Kmat, symmetric = TRUE)
   Umat <- eigen_result$vectors
   Dvec <- eigen_result$values
+  if(option=="fast2"){
+	  Btmp <- colSums(Umat %*% diag(Dvec))
+	  B <- - Btmp %o% Btmp / nobs
+  } 
   Ksum <- colSums(Kmat)
   maxit <- as.integer(maxit)
   eps <- as.double(eps)
@@ -34,16 +38,6 @@ KERE <- function(x, y, kern,
   }
   ################################################################################
   #call Fortran core
-  if (option == "light")
-    fit <- .Fortran(
-      "expkern_light", omega,
-      as.double(Kmat), as.double(Umat),
-      as.double(Dvec),
-      nobs, as.double(y), nlam, ulam, eps, maxit, anlam = integer(1),
-      npass = integer(nlam), jerr = integer(1),
-      alpmat = double((nobs + 1) * nlam),
-      PACKAGE = "KERE"
-    )
   if (option == "fast")
     fit <- .Fortran(
       "expkern_fast", omega,

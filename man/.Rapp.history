@@ -1,2 +1,209 @@
-setwd('/Users/emeryyi/Dropbox/Research/googleproject/KERE/man')
-y <- matrix(rnorm(10*1),10,1)
+library(HDtweedie)
+examples(HDtweedie)
+example(HDtweedie)
+m2
+auto
+head(data)
+head(auto)
+crossprod
+crossprod(1:3,1:3)
+5*15,000
+5*15000
+rnorm(100, 0, 10)
+a = rnorm(100, 0, 10)
+a
+a = rnorm(10000, 0, 10)
+a = rnorm(1000000, 0, 10)
+hist(a)
+5210.87/7
+0.05/(0.05+0.009)
+17/1.5
+2/1.5
+0.5-0.4082
+pnorm
+pnorm(17,15,1.5,lower.tail=F)
+1-(1-0.0918)^20-20*0.0918*(1-0.0918)
+(1-0.0918)^20
+1-(1-0.0918)^20-20*0.0918*(1-0.0918)^19
+pnorm(1515,1500,sqrt(15000),lower.tail=F)
+15/sqrt(15000)
+0.5-0.1224
+0.5-0.01224
+0.5-0.0478
+300*5/11
+300*(5/11)*(1-5/11)
+-6/sqrt(74.38)
+pnorm(130,136,74.38,lower.tail=F)
+20 + 36*20/40 + 38 * 60 /60
+20 + 38 * 80 /60
+library(mgcv)
+require(mgcv)
+dat <- gamSim(3,n=400)
+b<-gam(y ~ s(x2,by=x1),data=dat)
+dat <- gamSim(4)
+dat
+s(x2,by=fac)
+library(KERE)
+N <- 200#
+X1 <- runif(N)#
+X2 <- 2*runif(N)#
+X3 <- 3*runif(N)#
+SNR <- 10 #
+Y <- X1**1.5 + 2 * (X2**.5) + X1*X3#
+sigma <- sqrt(var(Y)/SNR)#
+Y <- Y + X2*rnorm(N,0,sigma)#
+X <- cbind(X1,X2,X3)
+kern <- rbfdot(sigma=0.1)#
+lambda <- exp(seq(log(0.5),log(0.01),len=10))#
+m1 <- KERE(x=X, y=Y, kern=kern, lambda = lambda, omega = 0.5)
+269.72/5
+269.72/4
+67.43/2
+269.72-33.71
+236.01/3
+?pmax
+pmin(5:1, pi)
+load("/Users/yiyang/Dropbox/collaborator/Yanjia/FG/realdata/internel_model_ncvreg/adlasso_gamma2/colon_result.rda")
+res
+25+10+30+492+64+10
+631/2
+53.91+150.38+159.17
+363.46/2
+363.46/2+46
+315.5-227.73
+87.77+240
+library(stat4)
+library(stats4)
+set.seed(680)n=10; p=5; sigma.star=1
+qr.solve(t(X)%*%X) %*% t(X)%*%y
+beta.star
+y
+qr.solve(crossprod(X)) %*% crossprod(X,y)
+qr.solve(crossprod(X), crossprod(X,y))
+set.seed(680)
+q=min(c(n,p))
+out=svd(X, nu=q, nv=q)
+X=cbind(X[,1],X)
+svd(X)
+out=svd(X, nu=10, nv=10)
+out=svd(X, nu=3, nv=3)
+out
+?svd
+svd(X, nu=10, nv=3)
+svd(X, nu=6, nv=3)
+svd(X, nu=, nv=3)
+X=matrix(rnorm(n*p), nrow=n, ncol=p)
+svd(X, nu=,5 nv=3)
+svd(X, nu=5 nv=3)
+svd(X, nu=5, nv=3)
+X
+svd(X, nu=4, nv=4)
+svd(X, nu=5, nv=\5)
+svd(X, nu=5, nv=5)
+set.seed(5701)n=5; p=10X=cbind(1, matrix(rnorm(n*(p-1)), nrow=n, ncol=(p-1)))beta.star=rep(1,p)y=X%*%beta.star + 1*rnorm(n)xbar=apply(X[,-1], 2, mean); ybar=mean(y)Xtilde=scale(X[,-1], center=xbar, scale=FALSE); ytilde=y-ybarq=min(c(n-1, p-1))out=svd(Xtilde, nu=q, nv=q)
+lam.vec=10^seq(from=-8, to=8, by=0.5) beta.hat.matrix=matrix(NA, nrow=p, ncol=length(lam.vec)) for(j in 1:length(lam.vec)){  H=diag(out$d[1:q]/(out$d[1:q]^2 + lam.vec[j]))  bhatm1=out$v%*%H%*%t(out$u)%*%ytilde  bhat1=ybar - sum(xbar*bhatm1)  beta.hat.matrix[,j]=c(bhat1, bhatm1)}
+lam.vec=10^seq(from=-8, to=8, by=0.5)
+beta.hat.matrix=matrix(NA, nrow=p, ncol=length(lam.vec)) for(j in 1:length(lam.vec)){  H=diag(out$d[1:q]/(out$d[1:q]^2 + lam.vec[j]))  bhatm1=out$v%*%H%*%t(out$u)%*%ytilde  bhat1=ybar - sum(xbar*bhatm1)  beta.hat.matrix[,j]=c(bhat1, bhatm1)}
+library(glmvsd)
+example(glmvsd)
+b_AIC
+v1_BIC
+getwd()
+library(gglasso)
+data(Bardet)
+data(bardet)
+load("/Users/yiyang/Dropbox/Teaching/MATH680/Topic4/note/Bardet.rda")
+library(glmnet)#
+load("Bardet.rda")
+ls
+ls()
+library(e1071)
+hamming.window(10)#
+#
+x<-rnorm(500)#
+y<-stft(x, wtype="hamming.window")
+plot(x)
+plot(y)
+setwd('/Users/yiyang/Dropbox/Research/prog_project/KERE/man')
+\name{cv2d.KERE}#
+\alias{cv2d.KERE}#
+%- Also NEED an '\alias' for EACH other topic documented here.#
+\title{2D Cross-validation for KERE}#
+\description{#
+Does 2D k-fold cross-validation for \code{KERE}, and returns the best value for \code{lambda} and \code{sigma} (for Gaussian and Laplace kernels) or \code{scale} for Hyperbolic tanget kernel.#
+}#
+\usage{#
+\method{cv2d}{KERE}(x, y, kname = c("rbfdot","laplacedot","tanhdot"), lambda = NULL, sigma = NULL, ...)#
+}#
+%- maybe also 'usage' for other objects documented here.#
+\arguments{#
+  \item{x}{matrix of predictors, of dimension \eqn{N \times p}{N*p}; each row is an observation vector.}#
+  \item{y}{response variable.#
+}#
+\item{kname}{the name of the kernel to be used. Currently  \code{cv2d.KERE} only supports #
+three kernels:#
+\itemize{#
+\item\code{"rbfdot"} Radial Basis kernel function,#
+\item\code{"laplacedot"} Laplacian kernel function,#
+\item\code{"tanhdot"} Hyperbolic tangent kernel function,#
+}#
+}#
+\item{lambda}{a user supplied \code{lambda} sequence. It is better to supply a decreasing sequence of \code{lambda} values, if not, the program will sort user-defined \code{lambda} sequence in decreasing order automatically.#
+}#
+\item{sigma}{a user supplied \code{sigma} sequence, as the parameters for the kernels.#
+}#
+  \item{\dots}{other arguments that can be passed to \code{KERE}.}#
+}#
+\details{#
+The algorithm generates a 2D grid of (\code{lambda}, \code{sigma}) pairs from the user specified \code{lambda} and \code{sigma} sequences. Then for each pair, the function computes the corresponding averaged cross-validation errors. The values and locations of the optimal \code{lambda} and \code{sigma} that give the smallest error are return, as well as the whole 2D grid of cross-validation errors.#
+}#
+\value{#
+an object of class \code{\link{cv2d.KERE}} is returned, which is a#
+list with the ingredients of the cross-validation fit.#
+		\item{out_mat}{2D grid of cross validation errors for (\code{lambda}, \code{sigma}) pairs}#
+		\item{mm.cvm}{the optimal value of cross validation error}#
+		\item{loc.lambda}{the location of the optimal lambda}#
+		\item{loc.sigma}{the location of the optimal sigma}#
+		\item{mm.lambda}{the optimal lambda value}#
+		\item{mm.sigma}{the optimal sigma value}#
+}#
+\author{#
+Yi Yang, Teng Zhang and Hui Zou\cr#
+Maintainer: Yi Yang  <yi.yang6@mcgill.ca>#
+}#
+#
+\references{#
+Y. Yang, T. Zhang, and H. Zou. (2017) "Flexible Expectile Regression in Reproducing Kernel Hilbert Space." Technometrics. Accepted.#
+}#
+\examples{#
+#
+N <- 200#
+X1 <- runif(N)#
+X2 <- 2*runif(N)#
+X3 <- 3*runif(N)#
+SNR <- 10 #
+Y <- X1**1.5 + 2 * (X2**.5) + X1*X3#
+sigma <- sqrt(var(Y)/SNR)#
+Y <- Y + X2*rnorm(N,0,sigma)#
+X <- cbind(X1,X2,X3)#
+lambda <- exp(seq(log(1),log(0.001),len=10))#
+sigma <- exp(seq(log(0.01),log(0.001),len=10))#
+cv1 <- cv2d.KERE(X, Y, #
+		"rbfdot", 					     #
+		lambda = lambda, sigma = sigma, #
+		eps = 1e-6, maxit = 500, #
+		omega = 0.5, gamma = 1e-06)#
+cat("\n loc.lambda \n ", cv1$loc.lambda)#
+cat("\n loc.sigma \n ",cv1$loc.sigma)#
+kern <- rbfdot(sigma=cv1$mm.sigma)#
+m1 <- KERE(X, Y, #
+kern, 					     #
+lambda = cv1$mm.lambda, #
+eps = 1e-6, maxit = 500, #
+omega = 0.5, gamma = 1e-06)	#
+#
+}#
+% Add one or more standard keywords, see file 'KEYWORDS' in the#
+% R documentation directory.#
+\keyword{models}#
+\keyword{regression}% __ONLY ONE__ keyword per line

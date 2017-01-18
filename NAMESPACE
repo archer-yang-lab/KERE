@@ -5,8 +5,6 @@ import("methods")
 export(KERE,
 cv.KERE,
 cv2d.KERE,
-cv2d_L.KERE,
-cv2d_H.KERE,
 predict.KERE,
 
 ## kernel functions

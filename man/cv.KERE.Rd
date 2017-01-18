@@ -4,7 +4,7 @@
 \title{Cross-validation for KERE
 }
 \description{
-Does k-fold cross-validation for \code{KERE}, produces a plot, and returns a value for \code{lambda}.
+Does k-fold cross-validation for \code{KERE}, and returns a value for \code{lambda}.
 }
 \usage{
 \method{cv}{KERE}(x, y, kern, lambda = NULL, nfolds = 5, foldid, omega = 0.5, ...)
@@ -69,11 +69,11 @@ list with the ingredients of the cross-validation fit.
 }
 \author{
 Yi Yang, Teng Zhang and Hui Zou\cr
-Maintainer: Yi Yang  <yiyang@umn.edu>
+Maintainer: Yi Yang  <yi.yang6@mcgill.ca>
 }
 
 \references{
-Y. Yang, T. Zhang, and H. Zou. "Flexible Expectile Regression in Reproducing Kernel Hilbert Space." ArXiv e-prints: stat.ME/1508.05987, August 2015.
+Y. Yang, T. Zhang, and H. Zou. (2017) "Flexible Expectile Regression in Reproducing Kernel Hilbert Space." Technometrics. Accepted.
 }
 \examples{
 

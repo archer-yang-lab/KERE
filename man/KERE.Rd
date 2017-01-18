@@ -67,11 +67,11 @@ An object with S3 class \code{\link{KERE}}.
 
 \author{
 Yi Yang, Teng Zhang and Hui Zou\cr
-Maintainer: Yi Yang  <yiyang@umn.edu>
+Maintainer: Yi Yang  <yi.yang6@mcgill.ca>
 }
 
 \references{
-Y. Yang, T. Zhang, and H. Zou. "Flexible Expectile Regression in Reproducing Kernel Hilbert Space." ArXiv e-prints: stat.ME/1508.05987, August 2015.
+Y. Yang, T. Zhang, and H. Zou. (2017) "Flexible Expectile Regression in Reproducing Kernel Hilbert Space." Technometrics. Accepted.
 }
 
 \examples{
