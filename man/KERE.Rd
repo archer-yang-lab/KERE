@@ -7,7 +7,7 @@ Fits a regularization path for the kernel expectile regression at a sequence of 
 }
 \usage{
 KERE(x, y, kern, lambda = NULL, eps = 1e-08, maxit = 1e4,
-omega = 0.5, gamma = 1e-06, option = c("fast", "normal"))
+omega = 0.5, gamma = 1e-06, option = c("light","fast", "normal"))
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -45,7 +45,7 @@ maximum number of loop iterations allowed at fixed lambda value. Default is 1e4.
   \item{gamma}{
  a scalar number. If it is specified, the number will be added to each diagonal element of the kernel matrix as perturbation. The default is \code{1e-06}.
 }
-  \item{option}{users can choose which method to use to update the inverse matrix in the MM algorithm. \code{"fast"} uses a trick described in Yang, Zhang and Zou (2015) to update estimates for each lambda. \code{"normal"} uses a naive way for the computation.
+  \item{option}{users can choose which method to use to update the inverse matrix in the MM algorithm. \code{"light"} uses a trick described in Yang and Zou (2017). \code{"fast"} uses a trick described in Yang, Zhang and Zou (2015) to update estimates for each lambda. \code{"normal"} uses a naive way for the computation.
 
 }
 }
