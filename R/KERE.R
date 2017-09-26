@@ -22,10 +22,6 @@ KERE <- function(x, y, kern,
   eigen_result <- eigen(Kmat, symmetric = TRUE)
   Umat <- eigen_result$vectors
   Dvec <- eigen_result$values
-  if(option=="fast2"){
-	  Btmp <- colSums(Umat %*% diag(Dvec))
-	  B <- - Btmp %o% Btmp / nobs
-  } 
   Ksum <- colSums(Kmat)
   maxit <- as.integer(maxit)
   eps <- as.double(eps)
